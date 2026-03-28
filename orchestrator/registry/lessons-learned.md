@@ -27,7 +27,8 @@ cache per-token quantization). This is why TurboQuant works for KV cache but not
 Padding breaks the round-trip guarantee. Block-diagonal rotation or careful padding
 bookkeeping would be needed.
 
-**When to revisit:** If moving to int6 or lower per-row quantization, or if implementing
-per-tensor (not per-row) quantization where rotation could equalize row-wise ranges.
-Also potentially useful combined with H37 (per-row adaptive bitwidth) where some rows
-get int5.
+**When to revisit:** Rotation helps **only at precision boundaries** — weights trained
+for one grid (int6 QAT) exported at a coarser grid (int5). EXP-H38-B confirmed
++17.3% MSE at int5 on int6-QAT-shaped weights. Actionable combined with H37
+(per-row adaptive bitwidth): apply rotation to rows assigned lower bitwidth than
+their QAT training precision.

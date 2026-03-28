@@ -37,15 +37,6 @@
       "source": "orchestrator_loop2"
     },
     {
-      "hypothesis_id": "H38",
-      "title": "TurboQuant-Inspired Hadamard Rotation Before Weight Quantization",
-      "rank": 5,
-      "priority_score": 0.85,
-      "risk": "low",
-      "rationale_for_ranking": "Pure export-time technique with zero training cost and zero artifact overhead (seed is 4 bytes). Directly reduces the measured fp16\u2192int8 quantization gap by making weight distributions rotation-invariant before clipping. Google's TurboQuant paper (2025) demonstrates the rotation trick achieves near-lossless compression at 3-bit for KV cache; applied to weights, the same principle should recover 0.001-0.004 BPB. Composable with all existing hypotheses including H26 (QAT) and H37 (spectral+progressive QAT). Implementation is ~40 lines, no retraining required. Ranked above MoD (H32) because MoD is medium-risk and requires architecture changes, while this is a guaranteed monotonic improvement to quantization fidelity.",
-      "source": "turboquant_research"
-    },
-    {
       "hypothesis_id": "H32",
       "title": "Mixture of Depth (MoD): Per-Layer Token Routing",
       "rank": 6,
@@ -89,6 +80,15 @@
       "risk": "low",
       "rationale_for_ranking": "The code already maintains both SWA and EMA states simultaneously. Currently only one is used. Blending is a post-training operation requiring zero retraining -- just evaluate 4 blend ratios on validation. Alpha sweep adds ~30s to export pipeline. Risk is essentially zero since we can fall back to pure EMA.",
       "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H38",
+      "title": "TurboQuant-Inspired Hadamard Rotation Before Weight Quantization",
+      "rank": 11,
+      "priority_score": 0.55,
+      "risk": "low",
+      "rationale_for_ranking": "DOWNGRADED after EXP-H38-A/B: +0.03% at int8, +0.17% at int6 on raw weights \u2014 negligible. Only actionable finding: +17.3% MSE on QAT-shaped weights downquantized to int5, which is relevant only as a sub-technique inside H37 (mixed-precision per-row export). Moved to contingent on H37.",
+      "source": "turboquant_research (downgraded after experiments)"
     },
     {
       "hypothesis_id": "H35",

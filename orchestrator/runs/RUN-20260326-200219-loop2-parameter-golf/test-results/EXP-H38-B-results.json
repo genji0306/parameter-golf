@@ -1,0 +1,702 @@
+[
+  {
+    "config": "int8",
+    "clip_range": 127,
+    "weight_type": "gaussian_outliers",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 43,
+    "weighted_mse_base": 5.18279040204404e-06,
+    "weighted_mse_best": 5.171442205181302e-06,
+    "overall_improvement_pct": 0.21895920888991283,
+    "time_base_ms": 729.7152089999994,
+    "time_rot_ms": 3333.8124630000016,
+    "top5_improved": [
+      {
+        "name": "blocks.7.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 5.232803299974978e-06,
+        "mse_best": 5.173046047052344e-06,
+        "improvement_pct": 1.1419739955239483,
+        "rotated": true
+      },
+      {
+        "name": "blocks.10.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 5.225509575374157e-06,
+        "mse_best": 5.1674173889932036e-06,
+        "improvement_pct": 1.1117037590883005,
+        "rotated": true
+      },
+      {
+        "name": "blocks.2.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 5.219448813768064e-06,
+        "mse_best": 5.169834571791286e-06,
+        "improvement_pct": 0.9505647769914805,
+        "rotated": true
+      },
+      {
+        "name": "blocks.6.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 5.1850944609858485e-06,
+        "mse_best": 5.135855404865238e-06,
+        "improvement_pct": 0.9496269834831206,
+        "rotated": true
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 5.205567295013598e-06,
+        "mse_best": 5.166431374513811e-06,
+        "improvement_pct": 0.7518089438066644,
+        "rotated": true
+      }
+    ]
+  },
+  {
+    "config": "int7",
+    "clip_range": 63,
+    "weight_type": "gaussian_outliers",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 44,
+    "weighted_mse_base": 2.1059537891718657e-05,
+    "weighted_mse_best": 2.101622426934386e-05,
+    "overall_improvement_pct": 0.20567223553290548,
+    "time_base_ms": 650.2188339999994,
+    "time_rot_ms": 3245.767871999999,
+    "top5_improved": [
+      {
+        "name": "blocks.10.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 2.1233625989261998e-05,
+        "mse_best": 2.095288218186527e-05,
+        "improvement_pct": 1.322166113026113,
+        "rotated": true
+      },
+      {
+        "name": "blocks.7.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 2.126322681342658e-05,
+        "mse_best": 2.102152782824826e-05,
+        "improvement_pct": 1.1366994638165706,
+        "rotated": true
+      },
+      {
+        "name": "blocks.2.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 2.118928475466607e-05,
+        "mse_best": 2.1002636871263852e-05,
+        "improvement_pct": 0.880859762673758,
+        "rotated": true
+      },
+      {
+        "name": "blocks.10.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 2.1122267621350223e-05,
+        "mse_best": 2.0939314878366142e-05,
+        "improvement_pct": 0.866160519617476,
+        "rotated": true
+      },
+      {
+        "name": "blocks.7.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 2.1114477217164414e-05,
+        "mse_best": 2.0966445355654646e-05,
+        "improvement_pct": 0.701091767450579,
+        "rotated": true
+      }
+    ]
+  },
+  {
+    "config": "int6",
+    "clip_range": 31,
+    "weight_type": "gaussian_outliers",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 40,
+    "weighted_mse_base": 8.695162400651087e-05,
+    "weighted_mse_best": 8.680391921450852e-05,
+    "overall_improvement_pct": 0.1698700785522811,
+    "time_base_ms": 658.6892089999949,
+    "time_rot_ms": 3242.3919530000107,
+    "top5_improved": [
+      {
+        "name": "blocks.7.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 8.784860801911917e-05,
+        "mse_best": 8.645092625074997e-05,
+        "improvement_pct": 1.5910118553785324,
+        "rotated": true
+      },
+      {
+        "name": "blocks.10.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 8.791547682457486e-05,
+        "mse_best": 8.689413669845893e-05,
+        "improvement_pct": 1.161729610082074,
+        "rotated": true
+      },
+      {
+        "name": "blocks.2.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 8.747515476833543e-05,
+        "mse_best": 8.662662971709175e-05,
+        "improvement_pct": 0.9700183480565117,
+        "rotated": true
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 8.734992275518999e-05,
+        "mse_best": 8.651307705989342e-05,
+        "improvement_pct": 0.9580382774257767,
+        "rotated": true
+      },
+      {
+        "name": "blocks.5.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 8.70159901547221e-05,
+        "mse_best": 8.624557367431903e-05,
+        "improvement_pct": 0.8853734572613625,
+        "rotated": true
+      }
+    ]
+  },
+  {
+    "config": "int5",
+    "clip_range": 15,
+    "weight_type": "gaussian_outliers",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 0.000298957244013307,
+    "weighted_mse_best": 0.000298957244013307,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 650.4981650000001,
+    "time_rot_ms": 3267.294205999992,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.00029852778541114284,
+        "mse_best": 0.00029852778541114284,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.00029840754197007764,
+        "mse_best": 0.00029840754197007764,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.0002981870788838787,
+        "mse_best": 0.0002981870788838787,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.00030091591582390935,
+        "mse_best": 0.00030091591582390935,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 0.00029782050722358824,
+        "mse_best": 0.00029782050722358824,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  },
+  {
+    "config": "int4",
+    "clip_range": 7,
+    "weight_type": "gaussian_outliers",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 0.00046218504257542224,
+    "weighted_mse_best": 0.00046218504257542224,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 650.868499999973,
+    "time_rot_ms": 3262.8402909999963,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.00045730790943391165,
+        "mse_best": 0.00045730790943391165,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.0004639337652900815,
+        "mse_best": 0.0004639337652900815,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.0004628349468637456,
+        "mse_best": 0.0004628349468637456,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.000466857425664123,
+        "mse_best": 0.000466857425664123,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 0.00045740877406383107,
+        "mse_best": 0.00045740877406383107,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  },
+  {
+    "config": "int8",
+    "clip_range": 127,
+    "weight_type": "qat_shaped_int6",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 3.324121038688417e-07,
+    "weighted_mse_best": 3.324121038688417e-07,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 654.9821660000106,
+    "time_rot_ms": 3281.4394079999934,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 3.3639518127501255e-07,
+        "mse_best": 3.3639518127501255e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 3.4141091463570767e-07,
+        "mse_best": 3.4141091463570767e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 3.3088902904705077e-07,
+        "mse_best": 3.3088902904705077e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 3.3284105006941166e-07,
+        "mse_best": 3.3284105006941166e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 3.3294667939203506e-07,
+        "mse_best": 3.3294667939203506e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  },
+  {
+    "config": "int7",
+    "clip_range": 63,
+    "weight_type": "qat_shaped_int6",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 1.636011236832044e-07,
+    "weighted_mse_best": 1.636011236832044e-07,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 714.109291000014,
+    "time_rot_ms": 3530.579708000001,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 1.6459498751290138e-07,
+        "mse_best": 1.6459498751290138e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 1.718613460664225e-07,
+        "mse_best": 1.718613460664225e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 1.6224283655191157e-07,
+        "mse_best": 1.6224283655191157e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 1.6140575669303857e-07,
+        "mse_best": 1.6140575669303857e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 1.6309943179184653e-07,
+        "mse_best": 1.6309943179184653e-07,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  },
+  {
+    "config": "int6",
+    "clip_range": 31,
+    "weight_type": "qat_shaped_int6",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 1.0828727777884772e-08,
+    "weighted_mse_best": 1.0828727777884772e-08,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 822.7328329999964,
+    "time_rot_ms": 4136.353498000002,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 1.0782863810828434e-08,
+        "mse_best": 1.0782863810828434e-08,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 1.0838375348281389e-08,
+        "mse_best": 1.0838375348281389e-08,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 1.0812544625205584e-08,
+        "mse_best": 1.0812544625205584e-08,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 1.0778465149786046e-08,
+        "mse_best": 1.0778465149786046e-08,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 1.0826233016963357e-08,
+        "mse_best": 1.0826233016963357e-08,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  },
+  {
+    "config": "int5",
+    "clip_range": 15,
+    "weight_type": "qat_shaped_int6",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 57,
+    "weighted_mse_base": 0.00042197259044644516,
+    "weighted_mse_best": 0.0003488460465786921,
+    "overall_improvement_pct": 17.329690487807625,
+    "time_base_ms": 796.5252940000056,
+    "time_rot_ms": 3912.7193730000445,
+    "top5_improved": [
+      {
+        "name": "blocks.5.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.0004253968814045782,
+        "mse_best": 0.0003321947247222694,
+        "improvement_pct": 21.909459320569844,
+        "rotated": true
+      },
+      {
+        "name": "blocks.7.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.00042231352524432433,
+        "mse_best": 0.00033412700331435235,
+        "improvement_pct": 20.881765953139375,
+        "rotated": true
+      },
+      {
+        "name": "blocks.2.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.00042340415918044774,
+        "mse_best": 0.000335049626320839,
+        "improvement_pct": 20.867658227691976,
+        "rotated": true
+      },
+      {
+        "name": "blocks.9.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 0.0004221219997057202,
+        "mse_best": 0.00033423750417475965,
+        "improvement_pct": 20.819690893208286,
+        "rotated": true
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.0004258033819599602,
+        "mse_best": 0.0003376375954175999,
+        "improvement_pct": 20.705750653396837,
+        "rotated": true
+      }
+    ]
+  },
+  {
+    "config": "int4",
+    "clip_range": 7,
+    "weight_type": "qat_shaped_int6",
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 0,
+    "weighted_mse_base": 0.0005043509757508582,
+    "weighted_mse_best": 0.0005043509757508582,
+    "overall_improvement_pct": 0.0,
+    "time_base_ms": 745.5625390000193,
+    "time_rot_ms": 3687.96829099999,
+    "top5_improved": [
+      {
+        "name": "blocks.0.attn.k_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.0005056045312726541,
+        "mse_best": 0.0005056045312726541,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.o_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.000504616935927049,
+        "mse_best": 0.000504616935927049,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.q_proj",
+        "shape": [
+          512,
+          512
+        ],
+        "mse_base": 0.000503658195254192,
+        "mse_best": 0.000503658195254192,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.attn.v_proj",
+        "shape": [
+          512,
+          256
+        ],
+        "mse_base": 0.0005079481721669079,
+        "mse_best": 0.0005079481721669079,
+        "improvement_pct": 0.0,
+        "rotated": false
+      },
+      {
+        "name": "blocks.0.mlp.down",
+        "shape": [
+          1536,
+          512
+        ],
+        "mse_base": 0.0005039699783746851,
+        "mse_best": 0.0005039699783746851,
+        "improvement_pct": 0.0,
+        "rotated": false
+      }
+    ]
+  }
+]
