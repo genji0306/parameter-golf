@@ -1,0 +1,103 @@
+{
+  "approaches": [
+    {
+      "hypothesis_id": "H05",
+      "title": "Multi-Token Prediction Auxiliary Loss (zero code changes)",
+      "rank": 1,
+      "priority_score": 0.95,
+      "risk": "low",
+      "rationale_for_ranking": "Zero code changes required -- just set MTP_NUM_HEADS=1 MTP_LOSS_WEIGHT=0.15. The entire MTP infrastructure already exists and is tested (lines 866-962). MTP heads are correctly excluded from export (line 1778). Zero artifact impact. The highest ratio of expected gain to implementation effort on the entire list.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H04",
+      "title": "Sequence Curriculum: Short-to-Long Schedule",
+      "rank": 2,
+      "priority_score": 0.92,
+      "risk": "low",
+      "rationale_for_ranking": "The ternary codebase already prototyped SEQ_LEN_START and SEQ_SCHEDULE_FRACTION env vars, proving the concept is implementable. For Stack A, this is a ~20-line change to the training loop. Expected ~3600 extra training steps in the first 30% from 512 seq_len (50ms/step vs 83ms). High confidence based on training efficiency literature.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H36",
+      "title": "Combo A: Depth Recurrence + MoD + Cross-Layer KV Sharing",
+      "rank": 3,
+      "priority_score": 0.88,
+      "risk": "high",
+      "rationale_for_ranking": "Highest ceiling hypothesis in the entire bank (0.005-0.015 BPB). Three mutually reinforcing techniques that address the core bottleneck: model capacity within 16MB. MoD cancels the compute overhead of recurrence, and KV sharing is free with recurrence. High risk but the potential payoff is 3-5x larger than any single low-risk hypothesis. Ranked 3rd because the expected value (ceiling * probability) still exceeds most safe bets.",
+      "source": "merged_combo"
+    },
+    {
+      "hypothesis_id": "H26",
+      "title": "Late QAT Threshold Tuning + Dual-Phase QAT",
+      "rank": 4,
+      "priority_score": 0.87,
+      "risk": "low",
+      "rationale_for_ranking": "Pure hyperparameter sweep -- just change LATE_QAT_THRESHOLD env var. The dual-phase variant (int8 at scale<0.3, int6 at scale<0.15) is a 5-line code change to CastedLinear.forward. The ternary entry trains with quantization from step 0, suggesting earlier QAT is viable. Low risk, low effort.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H38",
+      "title": "TurboQuant-Inspired Hadamard Rotation Before Weight Quantization",
+      "rank": 5,
+      "priority_score": 0.85,
+      "risk": "low",
+      "rationale_for_ranking": "Pure export-time technique with zero training cost and zero artifact overhead (seed is 4 bytes). Directly reduces the measured fp16\u2192int8 quantization gap by making weight distributions rotation-invariant before clipping. Google's TurboQuant paper (2025) demonstrates the rotation trick achieves near-lossless compression at 3-bit for KV cache; applied to weights, the same principle should recover 0.001-0.004 BPB. Composable with all existing hypotheses including H26 (QAT) and H37 (spectral+progressive QAT). Implementation is ~40 lines, no retraining required. Ranked above MoD (H32) because MoD is medium-risk and requires architecture changes, while this is a guaranteed monotonic improvement to quantization fidelity.",
+      "source": "turboquant_research"
+    },
+    {
+      "hypothesis_id": "H32",
+      "title": "Mixture of Depth (MoD): Per-Layer Token Routing",
+      "rank": 6,
+      "priority_score": 0.84,
+      "risk": "medium",
+      "rationale_for_ranking": "Novel DarkLab idea with strong theoretical backing (Raposo et al. 2024). Zero parameter cost, 15-25% step time reduction yielding 1000-1500 extra training steps. Unlike MoE (H16), MoD does not increase artifact size. Can be tested independently before committing to the full Combo A (H36). Medium risk because router training stability needs validation.",
+      "source": "darklab"
+    },
+    {
+      "hypothesis_id": "H08",
+      "title": "TTT Optimizer Upgrade: Adam + Per-Layer LR",
+      "rank": 7,
+      "priority_score": 0.83,
+      "risk": "low",
+      "rationale_for_ranking": "Direct improvement to the existing TTT code path (lines 1110-1229). The current SGD optimizer (line 1128) is the simplest possible choice. Adam with per-layer LR is a ~10-line change that leverages the existing param grouping by frozen/unfrozen blocks. TTT already contributes 0.0024 BPB (1.1218 -> 1.1194); a better optimizer could push this to 0.003-0.005.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H37",
+      "title": "Combo B: Spectral Reparam + Progressive QAT + Per-Row Adaptive Bitwidth",
+      "rank": 8,
+      "priority_score": 0.8,
+      "risk": "medium",
+      "rationale_for_ranking": "Quantization is the most predictable source of BPB loss (the gap between fp16 and int6 weights is measurable). This combo attacks quantization at all three phases: training (spectral), transition (progressive QAT), and export (per-row bitwidth). Each component is individually low-medium risk; combined they represent a systematic quantization improvement strategy. Lower rank than Combo A because the ceiling is smaller (0.003-0.008 vs 0.005-0.015).",
+      "source": "merged_combo"
+    },
+    {
+      "hypothesis_id": "H15",
+      "title": "EMA Decay Schedule (Warm-Start EMA)",
+      "rank": 9,
+      "priority_score": 0.78,
+      "risk": "low",
+      "rationale_for_ranking": "One-line change to ema_decay computation (line 1637 area). Low risk, zero artifact impact. The current fixed 0.997 is arbitrary; scheduling to match lr_mul dynamics is principled. Expected 0.0005-0.002 BPB for near-zero implementation effort.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H29",
+      "title": "SWA + EMA Ensemble Blending",
+      "rank": 10,
+      "priority_score": 0.76,
+      "risk": "low",
+      "rationale_for_ranking": "The code already maintains both SWA and EMA states simultaneously. Currently only one is used. Blending is a post-training operation requiring zero retraining -- just evaluate 4 blend ratios on validation. Alpha sweep adds ~30s to export pipeline. Risk is essentially zero since we can fall back to pure EMA.",
+      "source": "orchestrator_loop2"
+    },
+    {
+      "hypothesis_id": "H35",
+      "title": "Full Depth Recurrence: 4 Unique Layers x 3x = 12 Virtual Layers",
+      "rank": 11,
+      "priority_score": 0.74,
+      "risk": "high",
+      "rationale_for_ranking": "The DarkLab's most radical architectural proposal. At d_model=384 with 4 unique layers, the model fits in ~3MB at int6, leaving massive headroom for wider MLP or larger vocab. 12 virtual layers exceed the current 11 physical layers. Ranked 10th (not higher) because it requires a full architecture rewrite and the risk of recurrence instability is substantial. However, if validated, this becomes the foundation for Combo A (H36).",
+      "source": "darklab"
+    }
+  ]
+}

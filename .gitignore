@@ -1,11 +1,55 @@
-data/tokenizers
+# Python
 __pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.mypy_cache/
+
+# OS
 .DS_Store
-modded-nanogpt/
-modded-nanogpt
+
+# IDE
+.vscode/
+
+# Data & models
+data/
+data/tokenizers
 data/datasets
 data/manifest.json
 data/docs_selected.jsonl
-.mypy_cache/
-.venv
+*.bin
+*.pt
+*.safetensors
+
+# Submodules / external repos
+modded-nanogpt/
+modded-nanogpt
+
+# Logs
 logs/
+
+# Runtime / autoresearch state
+autoresearch-*.json
+autoresearch-*.log
+autoresearch-*.prev.*
+run.log
+*.prev.json
+*.prev.log
+
+# Orchestrator run logs
+orchestrator/runs/
+
+# Large video source files
+pgmc-video/
+
+# Scratch / temp
+scratch/
+
+# PDFs
+*.pdf
+
+# Viz intermediate files
+viz/
+
+# Parameter golf leaderboard repo
+parameter-golf/

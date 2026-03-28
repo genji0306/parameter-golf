@@ -1,0 +1,905 @@
+{
+  "experiment_id": "EXP-H38-A",
+  "hypothesis_id": "H38",
+  "title": "TurboQuant Hadamard Rotation Before Weight Quantization",
+  "architecture": "11L/512d/MLP1536",
+  "platform": "numpy 2.0.2, arm64",
+  "summary": {
+    "total_tensors": 68,
+    "total_params": 77463552,
+    "tensors_rotated": 32,
+    "tensors_fallback": 36,
+    "weighted_mse_baseline": 5.17029849719095e-06,
+    "weighted_mse_best": 5.168680329419356e-06,
+    "overall_mse_improvement_pct": 0.03129737620513051,
+    "export_time_baseline_ms": 789.6259180000001,
+    "export_time_rotated_ms": 5795.701924000001,
+    "time_overhead_pct": 633.9807105976985
+  },
+  "per_tensor": [
+    {
+      "name": "blocks.0.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.1725803239230196e-06,
+      "mse_rotated": 5.1725803239230196e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9976318304695153,
+      "cosine_rotated": 0.9976318304695153
+    },
+    {
+      "name": "blocks.0.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.168645697377556e-06,
+      "mse_rotated": 5.168107203141774e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.010418478404405906,
+      "cosine_baseline": 0.9975368262078952,
+      "cosine_rotated": 0.9975375722593866
+    },
+    {
+      "name": "blocks.0.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.164743265586257e-06,
+      "mse_rotated": 5.164743265586257e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.997465486343873,
+      "cosine_rotated": 0.997465486343873
+    },
+    {
+      "name": "blocks.0.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.169279873853289e-06,
+      "mse_rotated": 5.164872850271617e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.08525411061535149,
+      "cosine_baseline": 0.997274856694123,
+      "cosine_rotated": 0.9972774288479109
+    },
+    {
+      "name": "blocks.0.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.164657660269684e-06,
+      "mse_rotated": 5.162081399889171e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.049882500447828715,
+      "cosine_baseline": 0.997001582868331,
+      "cosine_rotated": 0.9970027577811015
+    },
+    {
+      "name": "blocks.0.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.233062824204351e-06,
+      "mse_rotated": 5.233062824204351e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9979014406201062,
+      "cosine_rotated": 0.9979014406201062
+    },
+    {
+      "name": "blocks.1.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.176147897946095e-06,
+      "mse_rotated": 5.139925528361743e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.6997939451986124,
+      "cosine_baseline": 0.997724546604236,
+      "cosine_rotated": 0.9977414401722574
+    },
+    {
+      "name": "blocks.1.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.179622819516498e-06,
+      "mse_rotated": 5.178292210606954e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.025689301246623053,
+      "cosine_baseline": 0.99722813702176,
+      "cosine_rotated": 0.997228215593603
+    },
+    {
+      "name": "blocks.1.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.167982234892021e-06,
+      "mse_rotated": 5.156518019140396e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.2218315626981715,
+      "cosine_baseline": 0.9975927070998836,
+      "cosine_rotated": 0.9975973001619063
+    },
+    {
+      "name": "blocks.1.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.151498130157414e-06,
+      "mse_rotated": 5.151498130157414e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9977080982756251,
+      "cosine_rotated": 0.9977080982756251
+    },
+    {
+      "name": "blocks.1.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.158226332525983e-06,
+      "mse_rotated": 5.158226332525983e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9971036030283366,
+      "cosine_rotated": 0.9971036030283366
+    },
+    {
+      "name": "blocks.1.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.2105107858720915e-06,
+      "mse_rotated": 5.2105107858720915e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.99772152320074,
+      "cosine_rotated": 0.99772152320074
+    },
+    {
+      "name": "blocks.10.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.137732427083956e-06,
+      "mse_rotated": 5.137732427083956e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9962433249989654,
+      "cosine_rotated": 0.9962433249989654
+    },
+    {
+      "name": "blocks.10.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.1666129577025775e-06,
+      "mse_rotated": 5.1666129577025775e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9954968258070166,
+      "cosine_rotated": 0.9954968258070166
+    },
+    {
+      "name": "blocks.10.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.171464703434399e-06,
+      "mse_rotated": 5.1593795005178495e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.2336901363461652,
+      "cosine_baseline": 0.9956791493530598,
+      "cosine_rotated": 0.9956886061415325
+    },
+    {
+      "name": "blocks.10.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.159346727866425e-06,
+      "mse_rotated": 5.159346727866425e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9957714069332035,
+      "cosine_rotated": 0.9957714069332035
+    },
+    {
+      "name": "blocks.10.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.164888214859121e-06,
+      "mse_rotated": 5.164888214859121e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9953541955498227,
+      "cosine_rotated": 0.9953541955498227
+    },
+    {
+      "name": "blocks.10.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.1710655124306135e-06,
+      "mse_rotated": 5.1710655124306135e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9965972838231116,
+      "cosine_rotated": 0.9965972838231116
+    },
+    {
+      "name": "blocks.2.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.19604995459376e-06,
+      "mse_rotated": 5.171650027078992e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.4695860841983812,
+      "cosine_baseline": 0.9975071294568392,
+      "cosine_rotated": 0.9975186540702268
+    },
+    {
+      "name": "blocks.2.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.155831356584548e-06,
+      "mse_rotated": 5.155831356584548e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9971606539105162,
+      "cosine_rotated": 0.9971606539105162
+    },
+    {
+      "name": "blocks.2.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.165283669604499e-06,
+      "mse_rotated": 5.165283669604499e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9971325822283518,
+      "cosine_rotated": 0.9971325822283518
+    },
+    {
+      "name": "blocks.2.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.153254462795009e-06,
+      "mse_rotated": 5.153254462795009e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9972079138246533,
+      "cosine_rotated": 0.9972079138246533
+    },
+    {
+      "name": "blocks.2.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.158305700291718e-06,
+      "mse_rotated": 5.158305700291718e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9968438672530996,
+      "cosine_rotated": 0.9968438672530996
+    },
+    {
+      "name": "blocks.2.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.2405745627614844e-06,
+      "mse_rotated": 5.2405745627614844e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9977939664922351,
+      "cosine_rotated": 0.9977939664922351
+    },
+    {
+      "name": "blocks.3.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.157456282508491e-06,
+      "mse_rotated": 5.150626428650723e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.1324267911088528,
+      "cosine_baseline": 0.9972429835409337,
+      "cosine_rotated": 0.9972479380335424
+    },
+    {
+      "name": "blocks.3.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.1838916745539245e-06,
+      "mse_rotated": 5.154019374070442e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.5762524056996843,
+      "cosine_baseline": 0.9971925565832094,
+      "cosine_rotated": 0.9972100859610759
+    },
+    {
+      "name": "blocks.3.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.155172618467153e-06,
+      "mse_rotated": 5.155172618467153e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9969916263681928,
+      "cosine_rotated": 0.9969916263681928
+    },
+    {
+      "name": "blocks.3.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.18395723733511e-06,
+      "mse_rotated": 5.169513423628519e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.2786252479585749,
+      "cosine_baseline": 0.996792612296525,
+      "cosine_rotated": 0.9968024270276867
+    },
+    {
+      "name": "blocks.3.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.168162989547543e-06,
+      "mse_rotated": 5.166846334010625e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.025476277346137,
+      "cosine_baseline": 0.9966744771149397,
+      "cosine_rotated": 0.9966760816614211
+    },
+    {
+      "name": "blocks.3.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.18924402937697e-06,
+      "mse_rotated": 5.18924402937697e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9975016806455165,
+      "cosine_rotated": 0.9975016806455165
+    },
+    {
+      "name": "blocks.4.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.151236932665329e-06,
+      "mse_rotated": 5.150291049756039e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.018362248167835826,
+      "cosine_baseline": 0.9969296620783227,
+      "cosine_rotated": 0.9969323274784376
+    },
+    {
+      "name": "blocks.4.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.172784112923255e-06,
+      "mse_rotated": 5.172784112923255e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9969385775546156,
+      "cosine_rotated": 0.9969385775546156
+    },
+    {
+      "name": "blocks.4.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.195222324288918e-06,
+      "mse_rotated": 5.165758921075537e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.5671249731822314,
+      "cosine_baseline": 0.9969628926413042,
+      "cosine_rotated": 0.996980282591179
+    },
+    {
+      "name": "blocks.4.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.158720406460332e-06,
+      "mse_rotated": 5.158720406460332e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9971936022222534,
+      "cosine_rotated": 0.9971936022222534
+    },
+    {
+      "name": "blocks.4.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.16285794565999e-06,
+      "mse_rotated": 5.15702568368823e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.11296576495315458,
+      "cosine_baseline": 0.996520969964344,
+      "cosine_rotated": 0.99652499829219
+    },
+    {
+      "name": "blocks.4.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.233076445027535e-06,
+      "mse_rotated": 5.233076445027535e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9975535924659596,
+      "cosine_rotated": 0.9975535924659596
+    },
+    {
+      "name": "blocks.5.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.162017730147817e-06,
+      "mse_rotated": 5.162017730147817e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9970924822454179,
+      "cosine_rotated": 0.9970924822454179
+    },
+    {
+      "name": "blocks.5.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.1773788321755536e-06,
+      "mse_rotated": 5.176453653754902e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.01786962960682592,
+      "cosine_baseline": 0.9966716368693773,
+      "cosine_rotated": 0.9966706863898877
+    },
+    {
+      "name": "blocks.5.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.157710740894696e-06,
+      "mse_rotated": 5.1525950758491425e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.09918479927522039,
+      "cosine_baseline": 0.9965658594142461,
+      "cosine_rotated": 0.996571612829531
+    },
+    {
+      "name": "blocks.5.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.1751974543046366e-06,
+      "mse_rotated": 5.162474958890876e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.24583594203111403,
+      "cosine_baseline": 0.9967462908673056,
+      "cosine_rotated": 0.9967553783210901
+    },
+    {
+      "name": "blocks.5.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.171972976751907e-06,
+      "mse_rotated": 5.168815212522439e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.061055311844471216,
+      "cosine_baseline": 0.9965103398950366,
+      "cosine_rotated": 0.9965121339288955
+    },
+    {
+      "name": "blocks.5.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.1895776967215525e-06,
+      "mse_rotated": 5.1895776967215525e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9973579941310972,
+      "cosine_rotated": 0.9973579941310972
+    },
+    {
+      "name": "blocks.6.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.137121055301185e-06,
+      "mse_rotated": 5.137121055301185e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9969818150739891,
+      "cosine_rotated": 0.9969818150739891
+    },
+    {
+      "name": "blocks.6.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.182446624336099e-06,
+      "mse_rotated": 5.15882189281144e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.45586058549489383,
+      "cosine_baseline": 0.9966752623480266,
+      "cosine_rotated": 0.9966902251497509
+    },
+    {
+      "name": "blocks.6.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.162370058326937e-06,
+      "mse_rotated": 5.15744550419999e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.09539328004980474,
+      "cosine_baseline": 0.9964663469871572,
+      "cosine_rotated": 0.9964698670850111
+    },
+    {
+      "name": "blocks.6.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.168378885459115e-06,
+      "mse_rotated": 5.149617428783519e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.3630046691890154,
+      "cosine_baseline": 0.9970322021215516,
+      "cosine_rotated": 0.9970424499433498
+    },
+    {
+      "name": "blocks.6.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.167800776511714e-06,
+      "mse_rotated": 5.167800776511714e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9963636724500242,
+      "cosine_rotated": 0.9963636724500242
+    },
+    {
+      "name": "blocks.6.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.1858419886731225e-06,
+      "mse_rotated": 5.1858419886731225e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9971279242423924,
+      "cosine_rotated": 0.9971279242423924
+    },
+    {
+      "name": "blocks.7.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.157146080090857e-06,
+      "mse_rotated": 5.157146080090857e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9961875689964497,
+      "cosine_rotated": 0.9961875689964497
+    },
+    {
+      "name": "blocks.7.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.1704148149941645e-06,
+      "mse_rotated": 5.157132568923182e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.2568893705097719,
+      "cosine_baseline": 0.996232853744384,
+      "cosine_rotated": 0.9962435245885113
+    },
+    {
+      "name": "blocks.7.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.1735556100784315e-06,
+      "mse_rotated": 5.166411150732927e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.1380957292038576,
+      "cosine_baseline": 0.9968988231451121,
+      "cosine_rotated": 0.9969041483884294
+    },
+    {
+      "name": "blocks.7.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.182307440988222e-06,
+      "mse_rotated": 5.182307440988222e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9967109775324823,
+      "cosine_rotated": 0.9967109775324823
+    },
+    {
+      "name": "blocks.7.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.174688365326391e-06,
+      "mse_rotated": 5.1660621345617154e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.16670048813909322,
+      "cosine_baseline": 0.9959129533162857,
+      "cosine_rotated": 0.9959205537186991
+    },
+    {
+      "name": "blocks.7.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.171577471710339e-06,
+      "mse_rotated": 5.171577471710339e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9970738067373848,
+      "cosine_rotated": 0.9970738067373848
+    },
+    {
+      "name": "blocks.8.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.177606066130738e-06,
+      "mse_rotated": 5.1540829107621725e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.45432493449900635,
+      "cosine_baseline": 0.9959707202351388,
+      "cosine_rotated": 0.9959879949664052
+    },
+    {
+      "name": "blocks.8.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.160225983190767e-06,
+      "mse_rotated": 5.160225983190767e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9964507334312851,
+      "cosine_rotated": 0.9964507334312851
+    },
+    {
+      "name": "blocks.8.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.16894227542835e-06,
+      "mse_rotated": 5.159715816644317e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.1784980038932349,
+      "cosine_baseline": 0.9961662889911045,
+      "cosine_rotated": 0.9961738914860456
+    },
+    {
+      "name": "blocks.8.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.161551720609916e-06,
+      "mse_rotated": 5.161551720609916e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9961712292517272,
+      "cosine_rotated": 0.9961712292517272
+    },
+    {
+      "name": "blocks.8.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.157862475740757e-06,
+      "mse_rotated": 5.157862475740757e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9957392647349823,
+      "cosine_rotated": 0.9957392647349823
+    },
+    {
+      "name": "blocks.8.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.196672450767568e-06,
+      "mse_rotated": 5.196672450767568e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9969160103226559,
+      "cosine_rotated": 0.9969160103226559
+    },
+    {
+      "name": "blocks.9.attn.k_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.162634622648794e-06,
+      "mse_rotated": 5.156254690250454e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.12357900306078085,
+      "cosine_baseline": 0.9961513033570701,
+      "cosine_rotated": 0.9961557721394564
+    },
+    {
+      "name": "blocks.9.attn.o_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.168617750247815e-06,
+      "mse_rotated": 5.16050684280959e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.15692604541777122,
+      "cosine_baseline": 0.9960025724007149,
+      "cosine_rotated": 0.9960101242483961
+    },
+    {
+      "name": "blocks.9.attn.q_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "mse_baseline": 5.158946607080534e-06,
+      "mse_rotated": 5.158946607080534e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9958197342140338,
+      "cosine_rotated": 0.9958197342140338
+    },
+    {
+      "name": "blocks.9.attn.v_proj.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "mse_baseline": 5.176719946311103e-06,
+      "mse_rotated": 5.159933647905647e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.3242651443298272,
+      "cosine_baseline": 0.9954773343799954,
+      "cosine_rotated": 0.995492501171105
+    },
+    {
+      "name": "blocks.9.mlp.down.weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "mse_baseline": 5.1718725112186526e-06,
+      "mse_rotated": 5.164345034034676e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.1455464566778919,
+      "cosine_baseline": 0.9955877914346869,
+      "cosine_rotated": 0.9955978079908266
+    },
+    {
+      "name": "blocks.9.mlp.up.weight",
+      "shape": [
+        512,
+        1536
+      ],
+      "mse_baseline": 5.165204048005053e-06,
+      "mse_rotated": 5.165204048005053e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9967772443598472,
+      "cosine_rotated": 0.9967772443598472
+    },
+    {
+      "name": "embed.weight",
+      "shape": [
+        50304,
+        512
+      ],
+      "mse_baseline": 5.167360935566928e-06,
+      "mse_rotated": 5.165821606352384e-06,
+      "used_rotation": true,
+      "improvement_pct": 0.029789465720275743,
+      "cosine_baseline": 0.9936002876057382,
+      "cosine_rotated": 0.9936016902571099
+    },
+    {
+      "name": "lm_head.weight",
+      "shape": [
+        50304,
+        512
+      ],
+      "mse_baseline": 5.166056439149491e-06,
+      "mse_rotated": 5.166056439149491e-06,
+      "used_rotation": false,
+      "improvement_pct": 0.0,
+      "cosine_baseline": 0.9936048883550379,
+      "cosine_rotated": 0.9936048883550379
+    }
+  ]
+}

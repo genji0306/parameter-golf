@@ -1,0 +1,33 @@
+{
+  "experiment_id": "EXP-H38-A",
+  "hypothesis_id": "H38",
+  "owner": "CAR",
+  "base_branch": "exp/base-parameter-golf",
+  "source_record_dir": "parameter-golf/records/WORKING_RECORD_DIR",
+  "entrypoint": "train_gpt.py",
+  "scope": [
+    "parameter-golf/train_gpt.py",
+    "parameter-golf/records/"
+  ],
+  "metric_name": "val_bpb",
+  "direction": "lower",
+  "verify_command": "python3 orchestrator/scripts/parameter_golf_extract_metric.py --path parameter-golf/records/WORKING_RECORD_DIR --prefer sliding",
+  "guard_commands": [
+    "python3 orchestrator/scripts/parameter_golf_check_budget.py --path parameter-golf/records/WORKING_RECORD_DIR --artifact-max 16000000 --skip-train --skip-eval",
+    "python3 orchestrator/scripts/parameter_golf_check_budget.py --path parameter-golf/records/WORKING_RECORD_DIR --train-max-ms 600000 --skip-artifact --skip-eval",
+    "python3 orchestrator/scripts/parameter_golf_check_budget.py --path parameter-golf/records/WORKING_RECORD_DIR --eval-max-ms 600000 --skip-artifact --skip-train"
+  ],
+  "iteration_cap": 5,
+  "rollback_policy": "git_revert",
+  "status": "completed_negative",
+  "notes": "TurboQuant-inspired Hadamard rotation before int8 quantization. Pure export-time change. Requires implementing walsh_hadamard_transform and wiring into quantize_float_tensor/dequantize_state_dict_int8. No retraining needed — can test on existing checkpoint by re-exporting with rotation enabled.",
+  "result": {
+    "outcome": "negative",
+    "weighted_mse_improvement_pct": 0.03,
+    "export_time_overhead_pct": 634.0,
+    "tensors_rotated": "32/68",
+    "verdict": "Per-row int8 clipping already handles outliers well. Rotation provides negligible benefit (+0.03% MSE) at int8 precision. May revisit at int6 or lower bitwidths.",
+    "report": "test-results/EXP-H38-A-report.md",
+    "data": "test-results/EXP-H38-A-results.json"
+  }
+}

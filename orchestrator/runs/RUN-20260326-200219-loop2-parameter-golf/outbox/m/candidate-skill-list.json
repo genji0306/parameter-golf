@@ -1,0 +1,1223 @@
+{
+  "skills": [
+    {
+      "id": "SK-BSS-001",
+      "skill_id": "SK-BSS-001",
+      "name": "Stack A Baseline (11L int6 MLP3x)",
+      "family": "baseline_stack_selection",
+      "description": "Start from the proven Stack A configuration: 11 layers, 512d, 8H/4KV, MLP 3x (1536), U-Net skips, int6 STE QAT, LZMA compression, Muon with WD=0.04, ortho init, EMA 0.997, SmearGate, BigramHash, seq_len=2048, sliding eval stride=64, warmdown=3500.",
+      "supports_hypotheses": [],
+      "preconditions": [],
+      "parameters": [
+        {
+          "name": "NUM_LAYERS",
+          "type": "int",
+          "default": 11,
+          "range": [
+            9,
+            13
+          ],
+          "description": "Number of transformer layers."
+        },
+        {
+          "name": "MODEL_DIM",
+          "type": "int",
+          "default": 512,
+          "range": [
+            384,
+            768
+          ],
+          "description": "Model hidden dimension."
+        },
+        {
+          "name": "MLP_EXPANSION",
+          "type": "float",
+          "default": 3.0,
+          "range": [
+            2.0,
+            4.0
+          ],
+          "description": "MLP hidden dim as multiple of model dim."
+        },
+        {
+          "name": "WARMDOWN_ITERS",
+          "type": "int",
+          "default": 3500,
+          "range": [
+            2000,
+            5000
+          ],
+          "description": "Warmdown schedule length."
+        }
+      ],
+      "verify_command": "python verify_baseline.py --checkpoint $CKPT --expect-layers 11 --expect-dim 512",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0,
+        "magnitude_max": 0.0
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-ABA-001",
+          "SK-FAD-001"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": []
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "No changes. This is the default configuration from the rank 1 codebase. Set env vars: NUM_LAYERS=11, MLP_MULT=3, MUON_WD=0.04, ADAM_WD=0.04, MUON_MOMENTUM=0.99, WARMDOWN_ITERS=3500, TIED_EMBED_LR=0.035, MATRIX_LR=0.025, SCALAR_LR=0.025, TRAIN_SEQ_LEN=2048.",
+      "last_applied": null,
+      "provenance": "seed",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-ZCC-001",
+      "skill_id": "SK-ZCC-001",
+      "name": "MTP Auxiliary Loss (zero code changes)",
+      "family": "zero_cost_config",
+      "description": "Enable the existing MTP infrastructure by setting MTP_NUM_HEADS=1, MTP_LOSS_WEIGHT=0.15. The MTP code path (lines 866-962) is fully implemented and MTP heads are excluded from export (line 1778). Zero artifact size impact, zero code changes.",
+      "supports_hypotheses": [
+        "H05"
+      ],
+      "preconditions": [
+        {
+          "check": "stack == 'stack_a'",
+          "description": "MTP infrastructure exists in rank 1 codebase."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "MTP_NUM_HEADS",
+          "type": "int",
+          "default": 1,
+          "range": [
+            1,
+            3
+          ],
+          "description": "Number of multi-token prediction heads."
+        },
+        {
+          "name": "MTP_LOSS_WEIGHT",
+          "type": "float",
+          "default": 0.15,
+          "range": [
+            0.05,
+            0.3
+          ],
+          "description": "Weight for MTP auxiliary loss term."
+        }
+      ],
+      "verify_command": "python verify_mtp.py --checkpoint $CKPT --verify-excluded-from-export",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.003
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-ABA-001"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "Set environment variables: MTP_NUM_HEADS=1 MTP_LOSS_WEIGHT=0.15. No code modifications needed. The existing code at line 947 handles everything: it computes mtp_logits from x[:, :valid_t, :] through mtp_head, applies softcap, computes CE against target_ids[:, k+1:], and adds weighted loss. Line 1778 already excludes mtp_heads from export.",
+      "last_applied": null,
+      "provenance": "hypothesis:H05",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-ZCC-002",
+      "skill_id": "SK-ZCC-002",
+      "name": "Late QAT Threshold Sweep",
+      "family": "zero_cost_config",
+      "description": "Sweep LATE_QAT_THRESHOLD env var across 0.10, 0.15, 0.20, 0.30, 0.50. Current default 0.15 activates QAT in the last ~15% of training. Earlier activation gives the model more steps to adapt to quantized weights. Pure env var sweep, zero code changes.",
+      "supports_hypotheses": [
+        "H26"
+      ],
+      "preconditions": [
+        {
+          "check": "late_qat_enabled == true",
+          "description": "Late QAT infrastructure must exist in codebase."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "LATE_QAT_THRESHOLD",
+          "type": "float",
+          "default": 0.15,
+          "range": [
+            0.1,
+            0.5
+          ],
+          "description": "LR schedule fraction below which QAT activates. Higher means earlier QAT."
+        }
+      ],
+      "verify_command": "python verify_qat.py --checkpoint $CKPT --measure-quant-gap",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0005,
+        "magnitude_max": 0.002
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "Sweep: set LATE_QAT_THRESHOLD=0.10, 0.15, 0.20, 0.30, 0.50 via env var. No code changes needed -- line 1676 already reads this env var and activates QAT when lr_mul(scale) < threshold. For dual-phase variant (H26 extension): add _qat_phase class variable to CastedLinear; use clip_range=127 (int8) when scale<0.30, switch to clip_range=31 (int6) when scale<0.15. This is a 5-line change to CastedLinear.forward.",
+      "last_applied": null,
+      "provenance": "hypothesis:H26",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-ZCC-003",
+      "skill_id": "SK-ZCC-003",
+      "name": "LZMA Preset 9 + VE All Layers",
+      "family": "zero_cost_config",
+      "description": "Two independent one-line changes: (1) Change lzma.compress preset from 6 to 9 at line 1795 to save 50-200KB. (2) Set VE_LAYERS=0,1,...,10 to extend Value Embedding from last 2 layers to all 11 layers. Zero artifact overhead for VE since ve_cache is already shared.",
+      "supports_hypotheses": [
+        "H12",
+        "H20"
+      ],
+      "preconditions": [
+        {
+          "check": "compression == 'lzma'",
+          "description": "LZMA compression must be active."
+        },
+        {
+          "check": "ve_enabled == true",
+          "description": "Value Embedding must be present."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "LZMA_PRESET",
+          "type": "int",
+          "default": 9,
+          "range": [
+            6,
+            9
+          ],
+          "description": "LZMA compression preset level. Higher = better compression, slower."
+        },
+        {
+          "name": "VE_LAYERS",
+          "type": "string",
+          "default": "0,1,2,3,4,5,6,7,8,9,10",
+          "range": [
+            "9,10",
+            "7,8,9,10",
+            "0,1,2,3,4,5,6,7,8,9,10"
+          ],
+          "description": "Comma-separated layer indices for Value Embedding."
+        },
+        {
+          "name": "VE_EARLY_SCALE",
+          "type": "float",
+          "default": 0.01,
+          "range": [
+            0.001,
+            0.1
+          ],
+          "description": "Initial VE scale for early layers (0 to num_layers-3)."
+        }
+      ],
+      "verify_command": "python verify_compression.py --checkpoint $CKPT --compare-preset6 && python verify_ve.py --checkpoint $CKPT",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0005,
+        "magnitude_max": 0.002
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "LZMA: At line 1795, change lzma.compress(quant_raw, preset=6) to lzma.compress(quant_raw, preset=9). One-character change. VE: Set VE_LAYERS='0,1,2,3,4,5,6,7,8,9,10' via env var. Modify ve_layer_scales init (line 855-857): nn.Parameter(torch.tensor(0.01) if idx < num_layers - 3 else torch.tensor(1.0)). No other code changes -- _get_ve method and ve_cache already handle arbitrary layer sets.",
+      "last_applied": null,
+      "provenance": "hypothesis:H12,H20",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-TE-001",
+      "skill_id": "SK-TE-001",
+      "name": "Sequence Curriculum (Short-to-Long)",
+      "family": "training_efficiency",
+      "description": "Start training with seq_len=512 for 30% of steps, 1024 for 30-60%, then 2048 for the final 40%. At 512, step time drops to ~50ms (from 83ms), yielding ~3600 extra steps. The ternary codebase prototyped SEQ_LEN_START and SEQ_SCHEDULE_FRACTION env vars.",
+      "supports_hypotheses": [
+        "H04"
+      ],
+      "preconditions": [
+        {
+          "check": "stack == 'stack_a'",
+          "description": "Requires Stack A training loop."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "SEQ_LEN_START",
+          "type": "int",
+          "default": 512,
+          "range": [
+            256,
+            1024
+          ],
+          "description": "Starting sequence length."
+        },
+        {
+          "name": "SEQ_SCHEDULE_FRACTION",
+          "type": "float",
+          "default": 0.3,
+          "range": [
+            0.2,
+            0.5
+          ],
+          "description": "Fraction of training at the starting seq_len."
+        }
+      ],
+      "verify_command": "python verify_curriculum.py --checkpoint $CKPT --measure-steps-gained",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.002,
+        "magnitude_max": 0.005
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In Hyperparameters class: add seq_len_start = int(os.environ.get('SEQ_LEN_START', 512)), seq_schedule_fraction = float(os.environ.get('SEQ_SCHEDULE_FRACTION', 0.3)). In main() training loop, before train_loader.next_batch: frac = step / estimated_total_steps; if frac < 0.3: cur_seq = 512; elif frac < 0.6: cur_seq = 1024; else: cur_seq = 2048. Pass cur_seq to next_batch instead of args.train_seq_len. ~20 lines of code.",
+      "last_applied": null,
+      "provenance": "hypothesis:H04",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-TE-002",
+      "skill_id": "SK-TE-002",
+      "name": "Warmup Removal (save 20 wasted steps)",
+      "family": "training_efficiency",
+      "description": "Remove the 20-step warmup-then-reset cycle (lines 1607-1631) that wastes ~1.7s. The Muon momentum already has its own warmup schedule (momentum_warmup_start=0.92, warmup_steps=1500) that makes the reset redundant. Either set WARMUP_STEPS=0 or keep optimizer state but reset model weights only.",
+      "supports_hypotheses": [
+        "H25"
+      ],
+      "preconditions": [
+        {
+          "check": "warmup_steps > 0",
+          "description": "Warmup must currently be enabled to test removal."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "WARMUP_STEPS",
+          "type": "int",
+          "default": 0,
+          "range": [
+            0,
+            20
+          ],
+          "description": "Number of warmup steps (0 = disabled)."
+        },
+        {
+          "name": "WARMUP_KEEP_OPTIMIZER",
+          "type": "bool",
+          "default": false,
+          "range": [
+            true,
+            false
+          ],
+          "description": "If true, keep optimizer state but reset model weights after warmup."
+        }
+      ],
+      "verify_command": "python verify_warmup.py --checkpoint $CKPT --measure-steps-gained --measure-bpb",
+      "expected_effect": {
+        "metric": "total_steps",
+        "direction": "increase",
+        "magnitude_min": 15,
+        "magnitude_max": 25
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "Variant A (recommended): Set WARMUP_STEPS=0 via env var. Rely on muon_momentum_warmup_start=0.92 + muon_momentum_warmup_steps=1500 (lines 63-64) which already implement gradual momentum ramp-up. Saves ~1.6s = ~20 steps. Variant B: At line 1627, only restore model state but not optimizer states: base_model.load_state_dict(initial_model_state); comment out the opt.load_state_dict lines. This keeps Muon momentum buffers warm.",
+      "last_applied": null,
+      "provenance": "hypothesis:H25",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-OAR-001",
+      "skill_id": "SK-OAR-001",
+      "name": "EMA Decay Schedule (Warm-Start EMA)",
+      "family": "optimizer_averaging_refinement",
+      "description": "Schedule EMA decay from 0.99 (early, weights change fast) to 0.999 (warmdown, weights converge). Linear interpolation: ema_decay = 0.99 + 0.009 * min(step/max_steps, 1.0). One-line change to EMA decay computation at line 1637.",
+      "supports_hypotheses": [
+        "H15"
+      ],
+      "preconditions": [
+        {
+          "check": "ema_enabled == true",
+          "description": "EMA must be enabled."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "EMA_DECAY_START",
+          "type": "float",
+          "default": 0.99,
+          "range": [
+            0.95,
+            0.997
+          ],
+          "description": "EMA decay at start of training."
+        },
+        {
+          "name": "EMA_DECAY_END",
+          "type": "float",
+          "default": 0.999,
+          "range": [
+            0.997,
+            0.9999
+          ],
+          "description": "EMA decay at end of training."
+        }
+      ],
+      "verify_command": "python verify_ema.py --checkpoint $CKPT --compare-fixed-decay",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0005,
+        "magnitude_max": 0.002
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In main() training loop, replace the fixed ema_decay=0.997 (line 1637) with: max_steps_estimate = int(args.max_wallclock_seconds * 1000 / 83); ema_decay = 0.99 + 0.009 * min(step / max_steps_estimate, 1.0). One-line replacement.",
+      "last_applied": null,
+      "provenance": "hypothesis:H15",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-OAR-002",
+      "skill_id": "SK-OAR-002",
+      "name": "SWA + EMA Ensemble Blending",
+      "family": "optimizer_averaging_refinement",
+      "description": "After training, blend SWA and EMA checkpoints: blended = alpha*SWA + (1-alpha)*EMA. Sweep alpha in [0.0, 0.1, 0.3, 0.5]. Post-training operation requiring zero retraining. Both SWA and EMA states are already maintained. Adds ~30s to export.",
+      "supports_hypotheses": [
+        "H29"
+      ],
+      "preconditions": [
+        {
+          "check": "swa_enabled == true && ema_enabled == true",
+          "description": "Both SWA and EMA must be active."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "SWA_EMA_ALPHA",
+          "type": "float",
+          "default": 0.3,
+          "range": [
+            0.0,
+            0.5
+          ],
+          "description": "Blend weight for SWA. 0.0 = pure EMA, 0.5 = equal blend."
+        }
+      ],
+      "verify_command": "python verify_blend.py --checkpoint $CKPT --sweep-alpha",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0005,
+        "magnitude_max": 0.002
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "After line 1765 (EMA application), add: if swa_state is not None and swa_count > 0: swa_avg = {name: t / swa_count for name, t in swa_state.items()}; best_bpb = float('inf'); best_alpha = 0.0; for alpha in [0.0, 0.1, 0.3, 0.5]: blended = {name: alpha * swa_avg[name] + (1-alpha) * ema_state[name] for name in avg_state}; base_model.load_state_dict(blended); bpb = eval_val(...); if bpb < best_bpb: best_bpb = bpb; best_alpha = alpha. Adds ~30s to export, free at training time.",
+      "last_applied": null,
+      "provenance": "hypothesis:H29",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-QGR-001",
+      "skill_id": "SK-QGR-001",
+      "name": "GPTQ-lite Per-Row Bit-Width Selection",
+      "family": "quantization_gap_reduction",
+      "description": "Extend GPTQ-lite from clip-percentile search to per-row bit-width selection (int5/int6/int7). Greedy knapsack under 16MB budget. Post-training step, zero training cost. Some rows survive int5; others benefit from int7 precision.",
+      "supports_hypotheses": [
+        "H07"
+      ],
+      "preconditions": [
+        {
+          "check": "artifact_size_mb < 16.0",
+          "description": "Model must already fit under 16MB before per-row optimization."
+        },
+        {
+          "check": "quantization_method == 'int6'",
+          "description": "Requires int6 as the base quantization."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "GPTQ_CANDIDATES",
+          "type": "int",
+          "default": 5,
+          "range": [
+            3,
+            10
+          ],
+          "description": "Number of clip percentile candidates per row."
+        },
+        {
+          "name": "GPTQ_BIT_WIDTHS",
+          "type": "string",
+          "default": "5,6,7",
+          "range": [
+            "5,6",
+            "5,6,7",
+            "4,5,6,7"
+          ],
+          "description": "Comma-separated bit widths to try per row."
+        },
+        {
+          "name": "GPTQ_BUDGET_SLACK_KB",
+          "type": "int",
+          "default": 50,
+          "range": [
+            0,
+            200
+          ],
+          "description": "KB of budget slack to leave below 16MB ceiling."
+        }
+      ],
+      "verify_command": "python verify_quant_gap.py --checkpoint $CKPT --compare-uniform-int6",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.003
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-EA-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-LCB-001",
+          "SK-CRE-001"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In quantize_int6_per_row (line 1242): after finding best int6 quantization, also compute int5 (clip_range=15) and int7 (clip_range=63) per-row errors. Return all three with byte costs. In mixed_quantize_int6 (line 1330): after quantizing all tensors, compute total_bytes. Use a priority queue: push (error_saved_per_byte, row_id, direction) for each row. Greedily upgrade int6->int7 while total_bytes < 16MB, downgrade high-tolerance rows int6->int5 to free space.",
+      "last_applied": null,
+      "provenance": "hypothesis:H07",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-EA-001",
+      "skill_id": "SK-EA-001",
+      "name": "TTT Adam + Per-Layer LR",
+      "family": "evaluation_advantage",
+      "description": "Replace TTT's SGD optimizer (line 1128) with AdamW. Use per-layer LR: lr_scale = 1.5^(layer_idx - num_layers + 1). Current TTT contributes 0.0024 BPB; a better optimizer could push this to 0.003-0.005. ~10-line change.",
+      "supports_hypotheses": [
+        "H08"
+      ],
+      "preconditions": [
+        {
+          "check": "ttt_enabled == true",
+          "description": "TTT must be enabled in the eval pipeline."
+        },
+        {
+          "check": "eval_time_remaining_s > 120",
+          "description": "At least 120s must remain for TTT after base eval."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "TTT_OPTIMIZER",
+          "type": "enum",
+          "default": "adamw",
+          "range": [
+            "sgd",
+            "adamw"
+          ],
+          "description": "Optimizer for test-time training."
+        },
+        {
+          "name": "TTT_LR",
+          "type": "float",
+          "default": 0.0001,
+          "range": [
+            1e-05,
+            0.001
+          ],
+          "description": "Base learning rate for TTT."
+        },
+        {
+          "name": "TTT_LAYER_LR_SCALE",
+          "type": "float",
+          "default": 1.5,
+          "range": [
+            1.0,
+            3.0
+          ],
+          "description": "Per-layer LR scaling factor (exponential from last layer)."
+        },
+        {
+          "name": "TTT_EPOCHS",
+          "type": "int",
+          "default": 3,
+          "range": [
+            1,
+            5
+          ],
+          "description": "Optimizer epochs per chunk."
+        }
+      ],
+      "verify_command": "python verify_ttt.py --checkpoint $CKPT --measure-bpb-delta",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.003
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-QGR-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-LCB-001",
+          "SK-CRE-001"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In eval_val_sliding_ttt (line 1128), replace: optimizer = torch.optim.SGD(ttt_params, lr=args.ttt_lr, momentum=args.ttt_momentum) with: param_groups = []; for name, p in base_model.named_parameters(): if not p.requires_grad: continue; layer_match = re.search(r'blocks\\.(\\d+)\\.', name); lr_scale = 1.5 ** (int(layer_match.group(1)) - len(base_model.blocks) + 1) if layer_match else 1.0; param_groups.append({'params': [p], 'lr': args.ttt_lr * lr_scale}); optimizer = torch.optim.AdamW(param_groups, weight_decay=0.01).",
+      "last_applied": null,
+      "provenance": "hypothesis:H08",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-CRE-001",
+      "skill_id": "SK-CRE-001",
+      "name": "Partial RoPE + XSA Tuning",
+      "family": "context_routing_enhancement",
+      "description": "Jointly tune Partial RoPE dims (8-24 of 64) and XSA layer range (last 3-6 layers). Current best: 16/64 RoPE dims, XSA on last 4 layers. Zero-parameter architectural changes that improve attention routing quality.",
+      "supports_hypotheses": [],
+      "preconditions": [
+        {
+          "check": "stack == 'stack_a'",
+          "description": "Only applicable to Stack A architecture."
+        },
+        {
+          "check": "num_layers >= 10",
+          "description": "Needs sufficient depth for XSA to have a meaningful range."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "PARTIAL_ROPE_DIMS",
+          "type": "int",
+          "default": 16,
+          "range": [
+            8,
+            24
+          ],
+          "description": "Number of head dims receiving RoPE encoding."
+        },
+        {
+          "name": "XSA_START_LAYER",
+          "type": "int",
+          "default": 7,
+          "range": [
+            5,
+            9
+          ],
+          "description": "First layer index where XSA is applied (0-indexed)."
+        },
+        {
+          "name": "LN_SCALE_ENABLED",
+          "type": "bool",
+          "default": true,
+          "range": [
+            true,
+            false
+          ],
+          "description": "Whether to apply 1/sqrt(l+1) LayerNorm scaling."
+        }
+      ],
+      "verify_command": "python verify_context_routing.py --checkpoint $CKPT --measure-attention-entropy",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.004
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-LCB-001"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "Set env vars: PARTIAL_ROPE_DIMS=16 (sweep 8-24), XSA_LAST_N=4 (sweep 3-6), LN_SCALE=1. These are already configurable via env vars in the rank 1 codebase. No code changes for sweep -- pure hyperparameter exploration.",
+      "last_applied": null,
+      "provenance": "seed",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-LCB-001",
+      "skill_id": "SK-LCB-001",
+      "name": "Trigram Hash Embedding",
+      "family": "local_context_bias",
+      "description": "Add TrigramHashEmbedding alongside BigramHash. Hash(t[i-2], t[i-1], t[i]) into 4096 buckets, dim=64, added to token embedding before transformer blocks. Captures common 3-byte patterns missed by bigrams. ~32KB int6 param overhead.",
+      "supports_hypotheses": [
+        "H01"
+      ],
+      "preconditions": [
+        {
+          "check": "bigram_hash_enabled == true",
+          "description": "BigramHash should already be present."
+        },
+        {
+          "check": "artifact_size_mb < 15.5",
+          "description": "Needs ~32KB headroom for the trigram table."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "TRIGRAM_BUCKETS",
+          "type": "int",
+          "default": 4096,
+          "range": [
+            2048,
+            8192
+          ],
+          "description": "Number of trigram hash buckets."
+        },
+        {
+          "name": "TRIGRAM_DIM",
+          "type": "int",
+          "default": 64,
+          "range": [
+            32,
+            128
+          ],
+          "description": "Embedding dimension for trigram features."
+        }
+      ],
+      "verify_command": "python verify_local_context.py --checkpoint $CKPT --ablate trigram",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.003
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In train_gpt.py: (1) Add TrigramHashEmbedding class after BigramHashEmbedding, with trigram_hash(tokens) computing hash(36313*t[2:], 27191*t[1:-1], 51749*t[:-2]) % (vocab-1). (2) In GPT.__init__, add self.trigram = TrigramHashEmbedding(4096, 64, model_dim) if trigram_vocab_size > 0. (3) In GPT.forward, add x = x + self.trigram(input_ids) after bigram line. (4) Add trigram params to tok_params for Adam optimizer.",
+      "last_applied": null,
+      "provenance": "hypothesis:H01",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-ABA-001",
+      "skill_id": "SK-ABA-001",
+      "name": "Activation + Softcap Exploration",
+      "family": "artifact_budget_audit",
+      "description": "Test GeLU^2 with learned per-layer temperature (H23) and poly5 softcap from ternary stack (H30). GeLU^2: replace F.leaky_relu(x, 0.5).square() with F.gelu(x/T).square() where T is a learned scalar. Poly5: replace tanh softcap with polynomial approximation. Only 11 extra params each.",
+      "supports_hypotheses": [
+        "H23",
+        "H30"
+      ],
+      "preconditions": [
+        {
+          "check": "stack == 'stack_a'",
+          "description": "Requires Stack A MLP architecture."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "ACTIVATION",
+          "type": "enum",
+          "default": "leaky_relu_squared",
+          "range": [
+            "leaky_relu_squared",
+            "gelu_squared",
+            "relu_squared"
+          ],
+          "description": "MLP activation function."
+        },
+        {
+          "name": "SOFTCAP_TYPE",
+          "type": "enum",
+          "default": "tanh",
+          "range": [
+            "tanh",
+            "poly5"
+          ],
+          "description": "Logit softcap function type."
+        },
+        {
+          "name": "LOGIT_SOFTCAP",
+          "type": "float",
+          "default": 30.0,
+          "range": [
+            10.0,
+            30.0
+          ],
+          "description": "Softcap magnitude."
+        }
+      ],
+      "verify_command": "python verify_activation.py --checkpoint $CKPT --compare-baseline-activation",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0005,
+        "magnitude_max": 0.002
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002"
+        ],
+        "conflicts_with": [
+          "SK-RLB-001"
+        ],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "GeLU^2: In MLP.__init__ (line 726): add self.temp = nn.Parameter(torch.ones(1)). In MLP.forward (line 728-730): change F.leaky_relu(..., 0.5) to F.gelu(F.linear(x, up_w) / self.temp). Keep .square(). Add self.temp to scalar_params. Poly5: Add function poly5_softcap(x, cap): t = x/cap; return cap * t * (1.0 - t*t/3.0 + t.pow(4)/5.0). At line 945, replace tanh softcap. Also test lowering cap from 30 to 10-15.",
+      "last_applied": null,
+      "provenance": "hypothesis:H23,H30",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-FAD-001",
+      "skill_id": "SK-FAD-001",
+      "name": "Paired Ablation Controller",
+      "family": "fast_ablation_design",
+      "description": "Control paired ablation runs: split GPU allocation (4+4 for paired, 8 for full stack), implement early-abort at step 2000 if treatment is worse by >0.01 BPB, and enforce that each new skill gets at least one clean paired ablation before composition.",
+      "supports_hypotheses": [],
+      "preconditions": [],
+      "parameters": [
+        {
+          "name": "EARLY_ABORT_STEP",
+          "type": "int",
+          "default": 2000,
+          "range": [
+            1000,
+            3000
+          ],
+          "description": "Step at which to check for early abort in paired ablation."
+        },
+        {
+          "name": "EARLY_ABORT_THRESHOLD",
+          "type": "float",
+          "default": 0.01,
+          "range": [
+            0.005,
+            0.02
+          ],
+          "description": "BPB difference threshold for early abort."
+        },
+        {
+          "name": "MIN_PAIRED_ABLATIONS",
+          "type": "int",
+          "default": 1,
+          "range": [
+            1,
+            3
+          ],
+          "description": "Minimum clean paired ablations before a skill can be composed."
+        }
+      ],
+      "verify_command": "python verify_ablation.py --experiment-log $LOG --check-protocol",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.0,
+        "magnitude_max": 0.0
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-ABA-001"
+        ],
+        "conflicts_with": [],
+        "requires": []
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "This is an orchestration-level skill, not a train_gpt.py change. The orchestrator launches two runs: control (baseline config) and treatment (baseline + skill-under-test). At EARLY_ABORT_STEP, compare training losses. If treatment is worse by > EARLY_ABORT_THRESHOLD, kill the treatment run and log as early_abort. The control run continues as the new baseline comparison point.",
+      "last_applied": null,
+      "provenance": "seed",
+      "version": 2,
+      "retired": false,
+      "retirement_reason": null
+    },
+    {
+      "id": "SK-QGR-004",
+      "skill_id": "SK-QGR-004",
+      "name": "TurboQuant Hadamard Rotation Before Quantization",
+      "family": "quantization_gap_reduction",
+      "description": "Apply Walsh-Hadamard transform with random sign flips to weight rows before int8 per-row quantization. Rotation spreads outlier values uniformly, converting skewed distributions to near-Gaussian. Deterministic from seed (zero storage). Inverse rotation applied at dequant time. Based on Google TurboQuant/PolarQuant (2025).",
+      "supports_hypotheses": [
+        "H38"
+      ],
+      "preconditions": [
+        {
+          "check": "quantization == 'int8_per_row'",
+          "description": "Per-row int8 quantization must be the export format."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "ROTATE_QUANT_ENABLED",
+          "type": "bool",
+          "default": true,
+          "range": [
+            true,
+            false
+          ],
+          "description": "Enable/disable Hadamard rotation before quantization."
+        },
+        {
+          "name": "ROTATE_QUANT_SEED_BASE",
+          "type": "int",
+          "default": 42,
+          "range": [
+            0,
+            65535
+          ],
+          "description": "Base seed for per-layer rotation. Final seed = base_seed XOR hash(layer_name)."
+        }
+      ],
+      "verify_command": "python3 -c \"import torch; from train_gpt import quantize_float_tensor, dequantize_state_dict_int8; W=torch.randn(512,512); q,s=quantize_float_tensor(W); W_hat=q.float()*s[:,None]; print(f'MSE: {((W-W_hat)**2).mean():.6f}')\"",
+      "expected_effect": {
+        "metric": "val_bpb",
+        "direction": "decrease",
+        "magnitude_min": 0.001,
+        "magnitude_max": 0.004
+      },
+      "compatibility": {
+        "composable_with": [
+          "SK-BSS-001",
+          "SK-ZCC-001",
+          "SK-ZCC-002",
+          "SK-ZCC-003",
+          "SK-TE-001",
+          "SK-TE-002",
+          "SK-QGR-001",
+          "SK-QGR-002",
+          "SK-QGR-003",
+          "SK-EA-001",
+          "SK-CRE-001",
+          "SK-LCB-001",
+          "SK-OAR-001",
+          "SK-OAR-002",
+          "SK-ABA-001",
+          "SK-FAD-001"
+        ],
+        "conflicts_with": [],
+        "requires": [
+          "SK-BSS-001"
+        ]
+      },
+      "utility_score": 0.0,
+      "utility": 0.0,
+      "application_count": 0,
+      "success_count": 0,
+      "failure_count": 0,
+      "code_change_sketch": "In train_gpt.py:\n1. Add walsh_hadamard_transform(x): butterfly O(d log d) in-place.\n2. Add rotate_for_quant(t, seed): rng=torch.Generator().manual_seed(seed); signs=2*torch.randint(0,2,(d,),generator=rng).float()-1; return wht(t*signs)/sqrt(d).\n3. In quantize_float_tensor: if ndim==2: t32=rotate_for_quant(t32, seed); then clip+quantize as before.\n4. In dequantize_state_dict_int8: after scale*q, apply inverse_rotate_for_quant(out, seed).\n5. Store seed in qmeta['rotation_seed'].\nTotal ~40 lines. Zero training changes. Zero artifact overhead.",
+      "last_applied": null,
+      "provenance": "hypothesis:H38",
+      "version": 1,
+      "retired": false,
+      "retirement_reason": null
+    }
+  ]
+}

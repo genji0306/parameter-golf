@@ -1,0 +1,155 @@
+{
+  "run_id": "RUN-20260326-200219-loop2-parameter-golf",
+  "generated_at": "2026-03-26T20:19:13+00:00",
+  "inputs": {
+    "solutions_catalog": "orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/outbox/al/solutions-catalog.json",
+    "approach_shortlist": "orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/outbox/rl/approach-shortlist.json",
+    "candidate_skill_list": "orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/outbox/m/candidate-skill-list.json"
+  },
+  "summary": {
+    "submission_count": 10,
+    "dominant_techniques": [
+      "sliding_window_eval",
+      "int6_quantization",
+      "mlp_3x",
+      "smeargate",
+      "bigram_hash",
+      "orthogonal_init",
+      "muon_weight_decay",
+      "u_net_skip",
+      "zstd_compression",
+      "muon_momentum_099",
+      "ema",
+      "swa",
+      "xsa",
+      "fp16_embedding_passthrough",
+      "ste_qat",
+      "flash_attention_3",
+      "deeper_model",
+      "longer_context_training",
+      "partial_rope",
+      "ln_scale",
+      "gptq_lite",
+      "ve128",
+      "leaky_relu_squared",
+      "test_time_training",
+      "parameter_banking",
+      "parallel_muon",
+      "ternary_quantization",
+      "lzma_compression",
+      "hadamard_rotation_quant"
+    ],
+    "selected_hypotheses": [
+      "H05",
+      "H04",
+      "H26",
+      "H38"
+    ]
+  },
+  "selected_experiments": [
+    {
+      "rank": 1,
+      "experiment_id": "EXP-H05-A",
+      "hypothesis_id": "H05",
+      "title": "Multi-Token Prediction Auxiliary Loss (zero code changes)",
+      "priority_score": 0.95,
+      "risk": "low",
+      "compatibility": null,
+      "execute_command": [
+        "python3",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/scripts/parameter_golf_run_experiment.py",
+        "--run-dir",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf",
+        "--experiment-file",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/test-plans/EXP-H05-A.json",
+        "--repo-root",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/parameter-golf"
+      ],
+      "skills": [
+        {
+          "skill_id": "SK-ZCC-001",
+          "family": "zero_cost_config",
+          "utility": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "experiment_id": "EXP-H04-A",
+      "hypothesis_id": "H04",
+      "title": "Sequence Curriculum: Short-to-Long Schedule",
+      "priority_score": 0.92,
+      "risk": "low",
+      "compatibility": null,
+      "execute_command": [
+        "python3",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/scripts/parameter_golf_run_experiment.py",
+        "--run-dir",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf",
+        "--experiment-file",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/test-plans/EXP-H04-A.json",
+        "--repo-root",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/parameter-golf"
+      ],
+      "skills": [
+        {
+          "skill_id": "SK-TE-001",
+          "family": "training_efficiency",
+          "utility": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "experiment_id": "EXP-H26-A",
+      "hypothesis_id": "H26",
+      "title": "Late QAT Threshold Tuning + Dual-Phase QAT",
+      "priority_score": 0.88,
+      "risk": "low",
+      "compatibility": null,
+      "execute_command": [
+        "python3",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/scripts/parameter_golf_run_experiment.py",
+        "--run-dir",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf",
+        "--experiment-file",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/test-plans/EXP-H26-A.json",
+        "--repo-root",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/parameter-golf"
+      ],
+      "skills": [
+        {
+          "skill_id": "SK-ZCC-002",
+          "family": "zero_cost_config",
+          "utility": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "experiment_id": "EXP-H38-A",
+      "hypothesis_id": "H38",
+      "title": "TurboQuant-Inspired Hadamard Rotation Before Weight Quantization",
+      "priority_score": 0.85,
+      "risk": "low",
+      "compatibility": "Composes with H05 (MTP), H04 (seq curriculum), H26 (QAT). Pure export-time change \u2014 orthogonal to all training-time hypotheses.",
+      "execute_command": [
+        "python3",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/scripts/parameter_golf_run_experiment.py",
+        "--run-dir",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf",
+        "--experiment-file",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/orchestrator/runs/RUN-20260326-200219-loop2-parameter-golf/test-plans/EXP-H38-A.json",
+        "--repo-root",
+        "/Users/applefamily/Desktop/Business/Opensens/03 - R&D Projects/Parameter golf/parameter-golf"
+      ],
+      "skills": [
+        {
+          "skill_id": "SK-QGR-004",
+          "family": "quantization_gap_reduction",
+          "utility": 0.0
+        }
+      ]
+    }
+  ]
+}
