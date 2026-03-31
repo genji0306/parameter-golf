@@ -1,7 +1,17 @@
 # MOPT-Golf Simulation Results
 
-**Date:** 2026-04-01 | **Runtime:** 16.5s (local numpy, no GPU)
+**Date:** 2026-04-01 | **Runtime:** 16.5s local + 65.7s Mac Mini M4
 **Architecture:** 11 layers, 512d, 1536 MLP, 8 heads (matches leaderboard #1)
+
+## UPDATE: Mac Mini M4 Reality Check (2026-04-01)
+
+**Both key ideas from MOPT-Golf FAIL on real testing:**
+
+1. **GPTQ ordering: 0% difference** — Per-row quantization is independent per layer. Ordering only matters with full Cholesky GPTQ + activation recalibration (GPU-only).
+
+2. **Bell-curve 678: BUSTS 16MB budget** — Uniform Int6 = 15.40 MB (fits). Bell 678 = 16.99 MB (1MB over). Higher-entropy Int7/Int8 compress worse with LZMA.
+
+**Verdict: MOPT-Golf contributes ZERO actionable improvements to Parameter Golf.** The document's theoretical analysis did not survive empirical testing. All three techniques (bell-curve allocation, middle-out ordering, bias correction) are either ineffective or infeasible within the 16MB constraint.
 
 ---
 
