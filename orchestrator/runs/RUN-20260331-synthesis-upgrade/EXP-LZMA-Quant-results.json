@@ -1,0 +1,71 @@
+{
+  "int6_baseline": {
+    "name": "int6_baseline",
+    "avg_mse": 2.740008139629981e-06,
+    "raw_bytes": 28925952,
+    "lzma_bytes": 16128584,
+    "lzma_mb": 15.381416320800781
+  },
+  "int5_baseline": {
+    "name": "int5_baseline",
+    "avg_mse": 1.045802222604332e-05,
+    "raw_bytes": 28925952,
+    "lzma_bytes": 13195792,
+    "lzma_mb": 12.584487915039062
+  },
+  "apot_3": {
+    "name": "apot_3terms",
+    "avg_mse": 3.737804481431044e-07,
+    "raw_bytes": 28925952,
+    "lzma_bytes": 21249316,
+    "lzma_mb": 20.26492691040039,
+    "n_codes": 121,
+    "bits_per_value": 7,
+    "unique_byte_values": 121
+  },
+  "clustered_32": {
+    "name": "clustered_32",
+    "avg_mse": 6.5441471415542174e-06,
+    "raw_bytes": 31719424,
+    "lzma_bytes": 16597668,
+    "lzma_mb": 15.82876968383789,
+    "n_clusters": 32,
+    "unique_byte_values": 32
+  },
+  "clustered_48": {
+    "name": "clustered_48",
+    "avg_mse": 2.9428723579905604e-06,
+    "raw_bytes": 33161216,
+    "lzma_bytes": 19493084,
+    "lzma_mb": 18.59005355834961,
+    "n_clusters": 48,
+    "unique_byte_values": 48
+  },
+  "clustered_64": {
+    "name": "clustered_64",
+    "avg_mse": 1.6368092010631213e-06,
+    "raw_bytes": 34603008,
+    "lzma_bytes": 21456332,
+    "lzma_mb": 20.462352752685547,
+    "n_clusters": 64,
+    "unique_byte_values": 64
+  },
+  "sparse_24": {
+    "name": "sparse_24_int8",
+    "avg_mse": 6.616859859457119e-05,
+    "raw_bytes": 57761792,
+    "lzma_bytes": 18366560,
+    "lzma_mb": 17.515716552734375,
+    "zero_fraction": 0.5000213623046875
+  },
+  "shared_cb_256": {
+    "name": "shared_codebook_256",
+    "avg_mse": 1.1065861499962954e-06,
+    "raw_bytes": 28836352,
+    "lzma_bytes": 17112208,
+    "lzma_mb": 16.319473266601562,
+    "codebook_bytes": 512,
+    "unique_byte_values": 249
+  },
+  "elapsed_s": 220.35323905944824
+}
