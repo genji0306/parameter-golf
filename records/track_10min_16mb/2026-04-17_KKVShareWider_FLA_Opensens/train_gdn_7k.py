@@ -190,18 +190,21 @@ def load_validation_tokens(pattern: str, seq_len: int) -> Tensor:
 
 
 def build_sentencepiece_luts(sp, vocab_size, device):
-    base_bytes = torch.zeros(vocab_size, dtype=torch.float32, device=device)
+    base_bytes = torch.zeros(vocab_size, dtype=torch.int16, device=device)
     has_space = torch.zeros(vocab_size, dtype=torch.bool, device=device)
-    is_boundary = torch.zeros(vocab_size, dtype=torch.bool, device=device)
+    is_boundary = torch.ones(vocab_size, dtype=torch.bool, device=device)
     for i in range(vocab_size):
+        if sp.is_control(i) or sp.is_unknown(i) or sp.is_unused(i):
+            continue
+        is_boundary[i] = False
+        if sp.is_byte(i):
+            base_bytes[i] = 1
+            continue
         piece = sp.id_to_piece(i)
-        raw = piece.encode("utf-8")
-        base_bytes[i] = len(raw)
         if piece.startswith("\u2581"):
             has_space[i] = True
-            base_bytes[i] = len(piece[1:].encode("utf-8")) + 1
-        if sp.is_control(i) or sp.is_unknown(i):
-            is_boundary[i] = True
+            piece = piece[1:]
+        base_bytes[i] = len(piece.encode("utf-8"))
     return base_bytes, has_space, is_boundary
 
 
