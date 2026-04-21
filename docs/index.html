@@ -327,13 +327,13 @@
   <div class="hero-badge">Active Research Campaign</div>
   <h1>Parameter <span class="accent">Golf</span></h1>
   <p class="hero-sub">
-    Minimizing bits-per-byte for a 10-minute, 16&nbsp;MB language model —
-    using multi-agent orchestration, systematic hypothesis testing, and
-    relentless compression engineering.
+    Minimizing bits-per-byte for a 10-minute, 16&nbsp;MB language model.
+    Locked benchmark: <strong style="color:var(--cyan)">KKVShare Wider FLA at 1.03385760</strong>.
+    V7 active — port TMA G3, isolate recurrence, then PR.
   </p>
   <div class="bpb-big">
-    <span class="bpb-num mono">1.07882</span>
-    <span class="bpb-label">BPB&nbsp;SOTA &nbsp;(canonical&nbsp;softmax&nbsp;line)</span>
+    <span class="bpb-num mono">1.03386</span>
+    <span class="bpb-label">BPB&nbsp;locked&nbsp;benchmark &nbsp;(KKVShare&nbsp;Wider&nbsp;FLA)</span>
   </div>
   <div class="hero-cta">
     <a href="#video" class="btn btn-primary">Watch the Intro Video</a>
@@ -361,14 +361,19 @@
     <h2 class="section-title">Campaign Metrics</h2>
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="stat-num" style="color:var(--cyan)">1.07882</span>
-        <span class="stat-label">Best BPB (canonical SOTA)</span>
-        <span class="stat-delta up">▲ PR #1716</span>
+        <span class="stat-num" style="color:var(--cyan)">1.03386</span>
+        <span class="stat-label">Locked benchmark BPB</span>
+        <span class="stat-delta up">KKVShare Wider FLA (Opensens)</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num" style="color:var(--amber)">1.03386</span>
-        <span class="stat-label">Best BPB (FLA benchmark)</span>
-        <span class="stat-delta up">▲ KKVShare Wider FLA</span>
+        <span class="stat-num" style="color:var(--muted)">1.07882</span>
+        <span class="stat-label">Canonical control — NS0</span>
+        <span class="stat-delta" style="color:var(--muted)">PR #1716 · hygiene reference</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--green)">−9.82%</span>
+        <span class="stat-label">TMA G3 throughput gain</span>
+        <span class="stat-delta up">415.3 ms → 374.5 ms (passed)</span>
       </div>
       <div class="stat-card">
         <span class="stat-num" style="color:var(--purple-light)">25+</span>
@@ -376,19 +381,14 @@
         <span class="stat-delta" style="color:var(--muted)">Leaderboard &amp; code audit</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num" style="color:var(--green)">32</span>
+        <span class="stat-num" style="color:var(--amber)">32</span>
         <span class="stat-label">Hypotheses Generated</span>
         <span class="stat-delta" style="color:var(--muted)">Across 10+ research loops</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num" style="color:var(--amber)">14</span>
-        <span class="stat-label">Experiment Skills Built</span>
-        <span class="stat-delta" style="color:var(--muted)">Reusable test templates</span>
-      </div>
-      <div class="stat-card">
         <span class="stat-num" style="color:var(--cyan)">&lt;1.00</span>
-        <span class="stat-label">Target BPB</span>
-        <span class="stat-delta up">V7 active campaign</span>
+        <span class="stat-label">V7 target BPB</span>
+        <span class="stat-delta up">Deadline 2026-04-30</span>
       </div>
     </div>
   </div>
@@ -446,29 +446,38 @@
     </div>
 
     <div class="tl-item">
-      <div class="tl-dot sota">L11</div>
+      <div class="tl-dot">L11</div>
       <div class="tl-body">
-        <div class="tl-title">PR #1716 — Live Canonical SOTA</div>
-        <div class="tl-desc">BigramHash embeddings (d=32) + Int8 control tensors + LZMA code wrapper + canonical scorer compliance. Strict byte accounting with bit_shuffle+Brotli-11 packaging.</div>
-        <span class="tl-bpb amber">1.07882 BPB — live SOTA</span>
+        <div class="tl-title">PR #1716 / #1700 — Canonical Control Lines Established</div>
+        <div class="tl-desc">NS0 (PR #1716): BigramHash d=32 + Int8 control tensors + LZMA code wrapper. NS1 (PR #1700): Multi-phase SGD TTT + Phased LoRA on NS0. Both retained as hygiene references and transfer surfaces — not the headline target.</div>
+        <span class="tl-bpb" style="color:var(--muted); background:rgba(136,136,168,0.08)">NS0 1.07882 · NS1 1.07219 — controls only</span>
       </div>
     </div>
 
     <div class="tl-item">
-      <div class="tl-dot">L12</div>
+      <div class="tl-dot sota">L12</div>
       <div class="tl-body">
-        <div class="tl-title">PR #1700 — Canonical Challenger</div>
-        <div class="tl-desc">Multi-phase SGD TTT + Phased LoRA applied to the NS0 base. Legal TTT import path established. Forms the NS1 control line for V7 experiments.</div>
-        <span class="tl-bpb">1.07219 BPB — challenger</span>
+        <div class="tl-title">KKVShare Wider FLA — Locked Benchmark</div>
+        <div class="tl-desc">Opensens reproduction of the KKVShare Wider FLA architecture. 3-seed mean under canonical scorer. This is the benchmark every new lane must beat, not NS0.</div>
+        <span class="tl-bpb amber">1.03385760 BPB — locked benchmark</span>
       </div>
     </div>
 
     <div class="tl-item">
-      <div class="tl-dot">V7</div>
+      <div class="tl-dot">SYS</div>
+      <div class="tl-body">
+        <div class="tl-title">TMA G3 — Systems Gate Passed</div>
+        <div class="tl-desc">Fused FC + activation kernel passed on the softmax control line. No BPB claim from TMA alone. Next step: transfer this throughput gain onto the <span class="mono">1.03385760</span> benchmark family before any recurrence isolate.</div>
+        <span class="tl-bpb" style="color:var(--green); background:rgba(16,185,129,0.08)">415.3298 ms → 374.5369 ms (−9.82%) ✓</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color:var(--purple-light); color:var(--purple-light); background:rgba(124,58,237,0.1)">V7</div>
       <div class="tl-body">
         <div class="tl-title">V7 Campaign — Active (2026-04-20)</div>
-        <div class="tl-desc">Compression-first philosophy: ANS/entropy coding as Phase 0 preflight. TMA G3 passed (−9.82% throughput). NV-002b CLA softmax spine as primary architecture bet. DeltaShare lane added. Target: sub-1.00 BPB.</div>
-        <span class="tl-bpb">FLA benchmark: 1.03386 BPB</span>
+        <div class="tl-desc">Compression-first: audit exact-payload ANS/rANS/Brotli-11 on the 1.03386 artifact first. Port TMA G3 onto benchmark family. Only then isolate Loop45 or DeltaShare. NV-015 DeltaShare is the new V7 architecture lane. NV-002b is a bridge, not the automatic main bet.</div>
+        <span class="tl-bpb">Target: sub-1.000 BPB by 2026-04-30</span>
       </div>
     </div>
 
@@ -590,6 +599,57 @@
   </div>
 </section>
 
+<!-- V7 QUEUE -->
+<section class="journey-section" style="padding-top:0">
+  <p class="section-label">V7 Execution Plan</p>
+  <h2 class="section-title">Next PR Path</h2>
+  <p class="section-sub">The cleanest "combine with TMA G3, then PR" sequence from V7 planning docs.</p>
+
+  <div style="margin-top:40px; display:flex; flex-direction:column; gap:12px;">
+
+    <div style="display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px 24px;">
+      <div style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:rgba(6,182,212,0.12); border:1px solid var(--cyan); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--cyan); font-family:'JetBrains Mono',monospace;">0</div>
+      <div>
+        <div style="font-size:15px; font-weight:600; margin-bottom:4px;">Exact-payload compression audit on <code style="font-family:monospace;font-size:13px;color:var(--cyan)">1.03385760</code> family</div>
+        <div style="font-size:13px; color:var(--muted)">Compare Brotli-11 vs rANS vs block-adaptive Huffman on the current quantized artifact. Measure true byte headroom before spending architectural budget. Must include code overhead — lossless wins are free budget.</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px 24px;">
+      <div style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:rgba(16,185,129,0.12); border:1px solid var(--green); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--green); font-family:'JetBrains Mono',monospace;">1a</div>
+      <div>
+        <div style="font-size:15px; font-weight:600; margin-bottom:4px;">Port TMA G3 onto the benchmark family</div>
+        <div style="font-size:13px; color:var(--muted)">TMA G3 already passed on the softmax control (415.3 ms → 374.5 ms, −9.82%). Test the fused FC + activation path on the <code style="font-family:monospace;font-size:12px;color:var(--cyan)">1.03385760</code> family. No BPB claims from TMA alone — goal is confirming the benchmark family can absorb the same throughput gain.</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px 24px;">
+      <div style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.4); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--green); font-family:'JetBrains Mono',monospace;">1b</div>
+      <div>
+        <div style="font-size:15px; font-weight:600; margin-bottom:4px;">Loop45 isolated on the TMA-safe path <span style="font-size:11px; color:var(--muted); font-weight:400;">(only after 1a passes)</span></div>
+        <div style="font-size:13px; color:var(--muted)">Exact parent stack + deeper recurrence only. No CaseOps, no pre-quant TTT, no extra packaging changes beyond already-trusted Phase 0 compressor. Benchmark family first; softmax control as sanity cross-check.</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px 24px;">
+      <div style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.4); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--purple-light); font-family:'JetBrains Mono',monospace;">2</div>
+      <div>
+        <div style="font-size:15px; font-weight:600; margin-bottom:4px;">NV-015 DeltaShare — new V7 architecture lane</div>
+        <div style="font-size:13px; color:var(--muted)">Cross-layer weight sharing in middle blocks + tiny low-rank delta corrections to restore flexibility. Edge and specialized blocks stay unique. Runs in parallel with Loop45 isolate as an independent architecture bet.</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid rgba(245,158,11,0.2); border-radius:12px; padding:20px 24px;">
+      <div style="flex-shrink:0; width:32px; height:32px; border-radius:50%; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--amber); font-family:'JetBrains Mono',monospace;">PR</div>
+      <div>
+        <div style="font-size:15px; font-weight:600; margin-bottom:4px;">Submit — beating <code style="font-family:monospace;font-size:13px;color:var(--cyan)">1.03385760</code> under canonical scorer</div>
+        <div style="font-size:13px; color:var(--muted)">3-seed mean required. Must clear the canonical scorer with bit_shuffle + Brotli-11 packaging. First winner from Phase 0+1 establishes the new benchmark; subsequent wins compound one validated change at a time.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ARCH SNAPSHOT -->
 <section class="arch-section">
   <div class="arch-inner">
@@ -598,44 +658,58 @@
     <p class="section-sub">The two trust anchors that define the V7 starting point.</p>
     <div class="arch-grid">
 
-      <div class="arch-card">
-        <div class="arch-label">Canonical SOTA</div>
-        <div class="arch-name">NS0 — PR #1716</div>
-        <div class="arch-bpb">1.07882 BPB</div>
+      <div class="arch-card" style="border-color:rgba(6,182,212,0.3)">
+        <div class="arch-label" style="color:var(--cyan)">🎯 Locked Benchmark</div>
+        <div class="arch-name">KKVShare Wider FLA</div>
+        <div class="arch-bpb">1.03385760 BPB</div>
         <div class="arch-details">
-          <div class="arch-row"><span class="k">Architecture</span><span class="v">11L / 512d / MLP3×</span></div>
-          <div class="arch-row"><span class="k">Quantization</span><span class="v">Int6 GPTQ + SDClip</span></div>
-          <div class="arch-row"><span class="k">Embeddings</span><span class="v">BigramHash d=32</span></div>
-          <div class="arch-row"><span class="k">Compression</span><span class="v">bit_shuffle + Brotli-11</span></div>
-          <div class="arch-row"><span class="k">TTT</span><span class="v">None (no-TTT baseline)</span></div>
-          <div class="arch-row"><span class="k">Budget</span><span class="v">&lt; 16 MB artifact</span></div>
+          <div class="arch-row"><span class="k">Source</span><span class="v">Opensens reproduction</span></div>
+          <div class="arch-row"><span class="k">Attention</span><span class="v">Linear / FLA + KV-sharing</span></div>
+          <div class="arch-row"><span class="k">MLP</span><span class="v">Wider (KKVShare variant)</span></div>
+          <div class="arch-row"><span class="k">Seeds</span><span class="v">3-seed mean (canonical)</span></div>
+          <div class="arch-row"><span class="k">TTT</span><span class="v">None — pre-TTT baseline</span></div>
+          <div class="arch-row"><span class="k">Rule</span><span class="v">Every new lane beats this</span></div>
         </div>
       </div>
 
       <div class="arch-card">
-        <div class="arch-label">FLA Benchmark</div>
-        <div class="arch-name">KKVShare Wider FLA</div>
-        <div class="arch-bpb">1.03386 BPB</div>
+        <div class="arch-label">🔬 Canonical Controls (hygiene only)</div>
+        <div class="arch-name">NS0 / NS1</div>
+        <div class="arch-bpb" style="color:var(--muted); font-size:20px">1.07882 / 1.07219 BPB</div>
         <div class="arch-details">
-          <div class="arch-row"><span class="k">Architecture</span><span class="v">KV-sharing + wider MLP</span></div>
-          <div class="arch-row"><span class="k">Attention</span><span class="v">Linear / FLA variant</span></div>
-          <div class="arch-row"><span class="k">KV Sharing</span><span class="v">Cross-layer spatial sharing</span></div>
-          <div class="arch-row"><span class="k">Seeds</span><span class="v">3-seed mean (canonical)</span></div>
-          <div class="arch-row"><span class="k">TTT</span><span class="v">None (pre-TTT baseline)</span></div>
-          <div class="arch-row"><span class="k">Status</span><span class="v">V7 benchmark to beat</span></div>
+          <div class="arch-row"><span class="k">NS0 — PR #1716</span><span class="v">BigramHash + Int8 + LZMA</span></div>
+          <div class="arch-row"><span class="k">NS1 — PR #1700</span><span class="v">NS0 + Phased LoRA TTT</span></div>
+          <div class="arch-row"><span class="k">Quantization</span><span class="v">Int6 GPTQ + SDClip</span></div>
+          <div class="arch-row"><span class="k">Compression</span><span class="v">bit_shuffle + Brotli-11</span></div>
+          <div class="arch-row"><span class="k">Role</span><span class="v">Transfer checks, not targets</span></div>
+          <div class="arch-row"><span class="k">Note</span><span class="v">Not the headline target</span></div>
+        </div>
+      </div>
+
+      <div class="arch-card" style="border-color:rgba(16,185,129,0.25)">
+        <div class="arch-label" style="color:var(--green)">⚡ Systems Gate (Passed)</div>
+        <div class="arch-name">TMA G3 Megakernel</div>
+        <div class="arch-bpb" style="color:var(--green)">−9.82% step time</div>
+        <div class="arch-details">
+          <div class="arch-row"><span class="k">Before</span><span class="v">415.3298 ms / step</span></div>
+          <div class="arch-row"><span class="k">After</span><span class="v">374.5369 ms / step</span></div>
+          <div class="arch-row"><span class="k">Tested on</span><span class="v">Softmax control line</span></div>
+          <div class="arch-row"><span class="k">Next</span><span class="v">Port to 1.03386 family</span></div>
+          <div class="arch-row"><span class="k">BPB claim?</span><span class="v">No — systems donor only</span></div>
+          <div class="arch-row"><span class="k">Unlock</span><span class="v">Loop45 after transfer</span></div>
         </div>
       </div>
 
       <div class="arch-card" style="border-color:rgba(167,139,250,0.2)">
-        <div class="arch-label" style="color:var(--purple-light)">V7 Target</div>
+        <div class="arch-label" style="color:var(--purple-light)">🗺️ V7 Execution Queue</div>
         <div class="arch-name">Sub-1.00 Campaign</div>
-        <div class="arch-bpb" style="color:var(--purple-light)">&lt; 1.000 BPB</div>
+        <div class="arch-bpb" style="color:var(--purple-light); font-size:28px">&lt; 1.000 BPB</div>
         <div class="arch-details">
-          <div class="arch-row"><span class="k">Phase 0</span><span class="v">ANS / rANS compression audit</span></div>
-          <div class="arch-row"><span class="k">Phase 1</span><span class="v">TMA G3 + Loop45 isolation</span></div>
-          <div class="arch-row"><span class="k">Phase 2</span><span class="v">NV-002b CLA spine</span></div>
-          <div class="arch-row"><span class="k">Phase 3</span><span class="v">DeltaShare low-rank delta</span></div>
-          <div class="arch-row"><span class="k">Phase 4</span><span class="v">Pre-quant TTT (PRC-006)</span></div>
+          <div class="arch-row"><span class="k">① Phase 0</span><span class="v">ANS/rANS payload audit</span></div>
+          <div class="arch-row"><span class="k">② Phase 1a</span><span class="v">Port TMA G3 to benchmark</span></div>
+          <div class="arch-row"><span class="k">③ Phase 1b</span><span class="v">Loop45 isolated (TMA-safe)</span></div>
+          <div class="arch-row"><span class="k">④ Phase 2</span><span class="v">NV-015 DeltaShare lane</span></div>
+          <div class="arch-row"><span class="k">⑤ Phase 3</span><span class="v">PRC-009 TTT (legal gate)</span></div>
           <div class="arch-row"><span class="k">Deadline</span><span class="v">2026-04-30</span></div>
         </div>
       </div>

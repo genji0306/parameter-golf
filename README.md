@@ -1,3 +1,53 @@
+---
+
+## Opensens Research — Parameter Golf Campaign
+
+**[Campaign Site →](https://genji0306.github.io/parameter-golf/)**
+
+### Locked Benchmark
+
+| Role | Run | BPB |
+|---|---|---|
+| 🎯 **Locked benchmark** | KKVShare Wider FLA *(Opensens reproduction)* | **1.03385760** |
+| 🔬 Canonical control | NS0 — PR #1716 | 1.07882 |
+| 🔬 Canonical control | NS1 — PR #1700 | 1.07219 |
+| 🏁 V7 target | Sub-1.00 campaign | **< 1.000** |
+
+`NS0` and `NS1` are retained as hygiene controls and transfer surfaces — not the headline target. Every new lane must beat **1.03385760**.
+
+### Systems Gate (Passed)
+
+**TMA G3** already passed on the softmax control line: `415.3298 ms → 374.5369 ms` (−9.82%).  
+Next step: port that throughput gain onto the `1.03385760` benchmark family before any recurrence isolate.
+
+### V7 Execution Queue
+
+1. Lock `1.03385760` as the benchmark — all new work compared against it
+2. Keep `NS0` / `NS1` as canonical controls, not the headline target
+3. Audit exact-payload ANS/rANS/Brotli-11 packaging on the `1.03385760` artifact family
+4. Port **TMA G3** throughput gain onto the benchmark family (systems donor, no BPB claim yet)
+5. Only then: isolate `Loop45` or another recurrence delta on a TMA-safe path
+6. Run `NV-015 DeltaShare` as the new V7 architecture lane
+7. Keep `NV-002b` alive as a bridge lane, not the automatic main bet
+8. Keep `PRC-009` ready while legal status resolves
+
+> Ref: [`orchestrator/parameter-golf-sub100-v7.md` L207–237](orchestrator/parameter-golf-sub100-v7.md) · [`orchestrator/CAMPAIGN-SYNTHESIS-V7.md` L88–112](orchestrator/CAMPAIGN-SYNTHESIS-V7.md)
+
+### Key Files
+
+```
+orchestrator/
+  CAMPAIGN-SYNTHESIS-V7.md          ← current campaign plan
+  parameter-golf-sub100-v7.md       ← detailed V7 execution doc
+  registry/experiment-registry.tsv  ← all experiments + kill reasons
+  registry/hypothesis-bank.md       ← full hypothesis ranking
+docs/
+  index.html                         ← campaign website
+  intro.mp4                          ← 83s intro video
+```
+
+---
+
 <img width="3840" height="1280" alt="1920x640-discord" src="https://github.com/user-attachments/assets/90607b26-171f-476a-90ae-69b9dbb7cb30" />
 
 <br>
