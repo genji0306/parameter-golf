@@ -1,0 +1,11 @@
+<svg width="180" height="195" viewBox="0 0 180 195" xmlns="http://www.w3.org/2000/svg">
+  <!-- Opensens logo mark approximation -->
+  <!-- Shape 1: backwards K (vertical bar + two arms going left) -->
+  <path d="M 108 28 L 108 102" stroke="#0bba96" stroke-width="19" stroke-linecap="round" fill="none"/>
+  <path d="M 108 46 L 38 22" stroke="#0bba96" stroke-width="19" stroke-linecap="round" fill="none"/>
+  <path d="M 108 84 L 38 108" stroke="#0bba96" stroke-width="19" stroke-linecap="round" fill="none"/>
+  <!-- Shape 2: hook/7 shape going down-right -->
+  <path d="M 64 95 Q 90 98 142 118 Q 162 128 152 155 L 108 165" stroke="#0bba96" stroke-width="19" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- "opensens" text -->
+  <text x="90" y="190" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="400" fill="#4a5568" letter-spacing="1.5">opensens</text>
+</svg>

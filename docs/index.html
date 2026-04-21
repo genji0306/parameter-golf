@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parameter Golf — Opensens R&D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #08080f;
+      --bg2: #0e0e1a;
+      --bg3: #131322;
+      --text: #e8e8f0;
+      --muted: #8888a8;
+      --cyan: #06b6d4;
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --green: #10b981;
+      --teal: #0bba96;
+      --border: rgba(255,255,255,0.07);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(8,8,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 32px; }
+    .nav-wordmark { font-size: 11px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(232,232,240,0.5); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 120px 48px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(6,182,212,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 20% 80%, rgba(124,58,237,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 999px; padding: 6px 16px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 32px;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    h1 span.accent { color: var(--cyan); }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px); color: var(--muted);
+      max-width: 620px; margin: 16px auto 48px;
+    }
+    .bpb-big {
+      display: inline-flex; align-items: baseline; gap: 8px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px 36px;
+      margin-bottom: 48px;
+    }
+    .bpb-num { font-size: 52px; font-weight: 700; color: var(--cyan); font-family: 'JetBrains Mono', monospace; line-height: 1; }
+    .bpb-label { font-size: 14px; color: var(--muted); font-weight: 500; align-self: flex-end; margin-bottom: 6px; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 10px;
+      font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--cyan); color: #08080f; }
+    .btn-primary:hover { background: #38d9f0; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); background: transparent; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* ── VIDEO ── */
+    .video-section {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--purple-light); margin-bottom: 16px;
+    }
+    .section-title { font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .section-sub { color: var(--muted); font-size: 16px; max-width: 560px; margin-bottom: 40px; }
+    .video-wrapper {
+      position: relative;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    }
+    .video-wrapper video { width: 100%; display: block; }
+
+    /* ── STATS ── */
+    .stats-section {
+      padding: 80px 48px;
+      background: var(--bg2);
+    }
+    .stats-inner { max-width: 1200px; margin: 0 auto; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 40px;
+      border: 1px solid var(--border);
+    }
+    .stat-card {
+      background: var(--bg3);
+      padding: 32px 28px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .stat-num {
+      font-size: 38px; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+      line-height: 1;
+    }
+    .stat-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .stat-delta { font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+
+    /* ── BPB JOURNEY ── */
+    .journey-section {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .timeline {
+      position: relative;
+      margin-top: 48px;
+    }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 18px; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(to bottom, var(--cyan), var(--purple), transparent);
+    }
+    .tl-item {
+      display: flex; gap: 28px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .tl-dot {
+      flex-shrink: 0;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      z-index: 1;
+    }
+    .tl-dot.killed { border-color: var(--red); color: var(--red); }
+    .tl-dot.sota { border-color: var(--amber); color: var(--amber); background: rgba(245,158,11,0.1); }
+    .tl-body {
+      flex: 1;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px;
+    }
+    .tl-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .tl-desc { font-size: 13px; color: var(--muted); }
+    .tl-bpb {
+      display: inline-block; margin-top: 10px;
+      font-size: 13px; font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan); background: rgba(6,182,212,0.08);
+      border-radius: 6px; padding: 3px 10px;
+    }
+    .tl-bpb.amber { color: var(--amber); background: rgba(245,158,11,0.08); }
+    .tl-bpb.red { color: var(--red); background: rgba(239,68,68,0.08); }
+
+    /* ── TECHNIQUES ── */
+    .tech-section {
+      padding: 80px 48px;
+      background: var(--bg2);
+    }
+    .tech-inner { max-width: 1200px; margin: 0 auto; }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .tech-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .tech-card:hover { border-color: rgba(6,182,212,0.2); }
+    .tech-icon { font-size: 22px; margin-bottom: 12px; }
+    .tech-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .tech-desc { font-size: 13px; color: var(--muted); }
+    .tech-status {
+      display: inline-block; margin-top: 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      border-radius: 999px; padding: 3px 10px;
+    }
+    .status-active { background: rgba(16,185,129,0.15); color: #10b981; }
+    .status-killed { background: rgba(239,68,68,0.12); color: var(--red); }
+    .status-pending { background: rgba(167,139,250,0.12); color: var(--purple-light); }
+
+    /* ── PRs ── */
+    .prs-section {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .pr-list { margin-top: 40px; display: flex; flex-direction: column; gap: 12px; }
+    .pr-row {
+      display: flex; align-items: center; gap: 20px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 24px;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pr-row:hover { border-color: rgba(6,182,212,0.25); background: rgba(6,182,212,0.03); }
+    .pr-num { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--cyan); font-weight: 700; min-width: 64px; }
+    .pr-title { flex: 1; font-size: 14px; font-weight: 500; }
+    .pr-bpb { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--amber); font-weight: 700; }
+    .pr-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+    }
+    .tag-sota { background: rgba(245,158,11,0.15); color: var(--amber); }
+    .tag-challenger { background: rgba(6,182,212,0.12); color: var(--cyan); }
+    .tag-research { background: rgba(124,58,237,0.12); color: var(--purple-light); }
+
+    /* ── ARCH ── */
+    .arch-section {
+      padding: 80px 48px;
+      background: var(--bg2);
+    }
+    .arch-inner { max-width: 1200px; margin: 0 auto; }
+    .arch-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .arch-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+    }
+    .arch-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .arch-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .arch-bpb { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--cyan); }
+    .arch-details { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .arch-row { display: flex; justify-content: space-between; font-size: 13px; }
+    .arch-row .k { color: var(--muted); }
+    .arch-row .v { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 48px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 12px; }
+    .footer-brand img { height: 24px; }
+    .footer-note { font-size: 13px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero, .video-section, .journey-section, .prs-section { padding: 60px 24px; }
+      .stats-section, .tech-section, .arch-section { padding: 60px 24px; }
+      footer { padding: 32px 24px; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="opensens-logo.svg" alt="Opensens" />
+    <span class="nav-wordmark">Opensens R&amp;D</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#video">Video</a></li>
+    <li><a href="#journey">BPB Journey</a></li>
+    <li><a href="#techniques">Techniques</a></li>
+    <li><a href="#prs">PRs</a></li>
+    <li><a href="https://github.com/genji0306/parameter-golf" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Active Research Campaign</div>
+  <h1>Parameter <span class="accent">Golf</span></h1>
+  <p class="hero-sub">
+    Minimizing bits-per-byte for a 10-minute, 16&nbsp;MB language model —
+    using multi-agent orchestration, systematic hypothesis testing, and
+    relentless compression engineering.
+  </p>
+  <div class="bpb-big">
+    <span class="bpb-num mono">1.07882</span>
+    <span class="bpb-label">BPB&nbsp;SOTA &nbsp;(canonical&nbsp;softmax&nbsp;line)</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#video" class="btn btn-primary">Watch the Intro Video</a>
+    <a href="https://github.com/genji0306/parameter-golf" target="_blank" class="btn btn-ghost">View on GitHub</a>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="video-section" id="video">
+  <p class="section-label">Campaign Overview</p>
+  <h2 class="section-title">83 Seconds. Every Byte Counts.</h2>
+  <p class="section-sub">A full walkthrough of the research campaign — from the problem statement through architecture experiments to the current frontier.</p>
+  <div class="video-wrapper">
+    <video controls preload="metadata" poster="">
+      <source src="intro.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="stats-inner">
+    <p class="section-label">By the Numbers</p>
+    <h2 class="section-title">Campaign Metrics</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--cyan)">1.07882</span>
+        <span class="stat-label">Best BPB (canonical SOTA)</span>
+        <span class="stat-delta up">▲ PR #1716</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--amber)">1.03386</span>
+        <span class="stat-label">Best BPB (FLA benchmark)</span>
+        <span class="stat-delta up">▲ KKVShare Wider FLA</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--purple-light)">25+</span>
+        <span class="stat-label">Submissions Analyzed</span>
+        <span class="stat-delta" style="color:var(--muted)">Leaderboard &amp; code audit</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--green)">32</span>
+        <span class="stat-label">Hypotheses Generated</span>
+        <span class="stat-delta" style="color:var(--muted)">Across 10+ research loops</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--amber)">14</span>
+        <span class="stat-label">Experiment Skills Built</span>
+        <span class="stat-delta" style="color:var(--muted)">Reusable test templates</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" style="color:var(--cyan)">&lt;1.00</span>
+        <span class="stat-label">Target BPB</span>
+        <span class="stat-delta up">V7 active campaign</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BPB JOURNEY -->
+<section class="journey-section" id="journey">
+  <p class="section-label">Research Trajectory</p>
+  <h2 class="section-title">The BPB Journey</h2>
+  <p class="section-sub">Each loop narrows the gap — dead ends eliminated, winning techniques compounded.</p>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot">L1</div>
+      <div class="tl-body">
+        <div class="tl-title">Loops 1–3 — Multi-Agent Orchestrator Built</div>
+        <div class="tl-desc">Analyzed 25 leaderboard submissions at code level. Discovered MTP is fully implemented but disabled (MTP_NUM_HEADS=0). Generated 32 ranked hypotheses. Built 14 reusable experiment skills.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">L4</div>
+      <div class="tl-body">
+        <div class="tl-title">Loop 4 — LeakyReLU Confirmed #1 Single Change</div>
+        <div class="tl-desc">Mac Mini M4 ablation campaign. LeakyReLU(0.5)² activation confirmed as the strongest single improvement over the baseline. Architecture advantage of 11L/512d family validated empirically.</div>
+        <span class="tl-bpb">~1.47 BPB baseline</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">L6</div>
+      <div class="tl-body">
+        <div class="tl-title">Loop 6 — Proxy Compressor Gate Established</div>
+        <div class="tl-desc">Critical lesson: all quant probes MUST use bit_shuffle+Brotli-11, not LZMA-9 or plain Brotli. H64 Lloyd-Max embeddings and H-R4P2 both killed by this trap — MSE savings evaporated under the real pipeline.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot sota">L8</div>
+      <div class="tl-body">
+        <div class="tl-title">Loop 8 — 1.0810 BPB Combined Solution</div>
+        <div class="tl-desc">SDClip + Brotli-11 pipeline established as the real SOTA packaging. GPTQ quantization stack locked in. H64 Lloyd-Max definitively killed under canonical pipeline.</div>
+        <span class="tl-bpb amber">1.0810 BPB</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">L10</div>
+      <div class="tl-body">
+        <div class="tl-title">Loop 10 — MTP / MoE / Mamba All Killed</div>
+        <div class="tl-desc">Rigorous elimination round. Multi-Token Prediction, Mixture-of-Experts, Mamba/SSM, and Knowledge Distillation all confirmed dead under budget constraints. 1ms overhead = 0.006 BPB heuristic established.</div>
+        <span class="tl-bpb red">Dead directions closed</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot sota">L11</div>
+      <div class="tl-body">
+        <div class="tl-title">PR #1716 — Live Canonical SOTA</div>
+        <div class="tl-desc">BigramHash embeddings (d=32) + Int8 control tensors + LZMA code wrapper + canonical scorer compliance. Strict byte accounting with bit_shuffle+Brotli-11 packaging.</div>
+        <span class="tl-bpb amber">1.07882 BPB — live SOTA</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">L12</div>
+      <div class="tl-body">
+        <div class="tl-title">PR #1700 — Canonical Challenger</div>
+        <div class="tl-desc">Multi-phase SGD TTT + Phased LoRA applied to the NS0 base. Legal TTT import path established. Forms the NS1 control line for V7 experiments.</div>
+        <span class="tl-bpb">1.07219 BPB — challenger</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">V7</div>
+      <div class="tl-body">
+        <div class="tl-title">V7 Campaign — Active (2026-04-20)</div>
+        <div class="tl-desc">Compression-first philosophy: ANS/entropy coding as Phase 0 preflight. TMA G3 passed (−9.82% throughput). NV-002b CLA softmax spine as primary architecture bet. DeltaShare lane added. Target: sub-1.00 BPB.</div>
+        <span class="tl-bpb">FLA benchmark: 1.03386 BPB</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECHNIQUES -->
+<section class="tech-section" id="techniques">
+  <div class="tech-inner">
+    <p class="section-label">Methods Explored</p>
+    <h2 class="section-title">Techniques &amp; Experiments</h2>
+    <p class="section-sub">Every direction tested rigorously — winners compounded, dead ends documented.</p>
+    <div class="tech-grid">
+
+      <div class="tech-card">
+        <div class="tech-icon">🗜️</div>
+        <div class="tech-name">GPTQ + SDClip Quantization</div>
+        <div class="tech-desc">Int6 weight quantization with adaptive sigma clipping. SDClip reduces outlier sensitivity. Stacked with bit_shuffle + Brotli-11 for canonical byte budget.</div>
+        <span class="tech-status status-active">Active SOTA</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">🔄</div>
+        <div class="tech-name">Loop45 Recurrence (TMA)</div>
+        <div class="tech-desc">45-step recurrent inference with TMA G3 kernel achieving −9.82% throughput. Systems-gate approach: unlock recurrence depth only after throughput is validated.</div>
+        <span class="tech-status status-active">V7 Priority</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">🧠</div>
+        <div class="tech-name">CLA / Cross-Layer KV Sharing</div>
+        <div class="tech-desc">NV-002b: sharing KV caches across middle layers frees ~1.3M parameters for reinvestment. Non-GDN parts survive canonical scorer audit.</div>
+        <span class="tech-status status-active">V7 Main Bet</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">📐</div>
+        <div class="tech-name">SpinQuant (Hadamard Rotation)</div>
+        <div class="tech-desc">H98: Hadamard rotation before GPTQ quantization reduces quantization error. Expected −0.005 BPB. Must retune sigma to 7–9σ post-rotation.</div>
+        <span class="tech-status status-pending">Queued</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">⚡</div>
+        <div class="tech-name">Phased LoRA TTT</div>
+        <div class="tech-desc">PRC-006: Test-Time Training where only LoRA parameters update at evaluation. Parameter-efficient and legal under canonical scorer rules.</div>
+        <span class="tech-status status-active">NS1 Control</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">📦</div>
+        <div class="tech-name">BigramHash Embeddings</div>
+        <div class="tech-desc">PRC-001: d=32 bigram hashing on the tightest n-gram size. ~200 KB artifact cost. Part of the canonical PR #1716 SOTA stack.</div>
+        <span class="tech-status status-active">In SOTA</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">🔗</div>
+        <div class="tech-name">DeltaShare (Low-Rank)</div>
+        <div class="tech-desc">New V7 structural lane: share middle-block weights with tiny low-rank delta corrections. Inspired by DeltaLLM. Avoids all-or-nothing hard sharing.</div>
+        <span class="tech-status status-pending">V7 New Lane</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">❌</div>
+        <div class="tech-name">GDN / FLA (Non-Canonical)</div>
+        <div class="tech-desc">H85 showed 1.034 BPB due to a buggy scorer with non-canonical LUT. Canonical 3-seed mean: 1.223 BPB. Entire GDN lane killed. Documentation saved future teams.</div>
+        <span class="tech-status status-killed">Killed</span>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon">❌</div>
+        <div class="tech-name">Per-Loop LoRA (H87)</div>
+        <div class="tech-desc">All 4 gates failed empirically. Artifact busts 16 MB budget by 50 KB. Structurally incompatible with GPTQ pipeline. Confirmed killed 2026-04-18.</div>
+        <span class="tech-status status-killed">Killed</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRs -->
+<section class="prs-section" id="prs">
+  <p class="section-label">Leaderboard Submissions</p>
+  <h2 class="section-title">Key Pull Requests</h2>
+  <p class="section-sub">Selected PRs on the <code style="font-family:monospace;font-size:14px;color:var(--cyan)">openai/parameter-golf</code> leaderboard, ordered by impact.</p>
+
+  <div class="pr-list">
+    <a href="https://github.com/openai/parameter-golf/pull/1716" target="_blank" class="pr-row">
+      <span class="pr-num">#1716</span>
+      <span class="pr-title">BigramHash + Int8 control tensors + LZMA code wrapper (NS0 canonical SOTA)</span>
+      <span class="pr-bpb">1.07882</span>
+      <span class="pr-tag tag-sota">Live SOTA</span>
+    </a>
+    <a href="https://github.com/openai/parameter-golf/pull/1700" target="_blank" class="pr-row">
+      <span class="pr-num">#1700</span>
+      <span class="pr-title">Multi-phase SGD TTT + Phased LoRA on NS0 base (NS1 challenger)</span>
+      <span class="pr-bpb">1.07219</span>
+      <span class="pr-tag tag-challenger">Challenger</span>
+    </a>
+    <a href="https://github.com/openai/parameter-golf/pull/1693" target="_blank" class="pr-row">
+      <span class="pr-num">#1693</span>
+      <span class="pr-title">AttnOutGate per-loop (PRC-003) — zero-init sigmoid gate</span>
+      <span class="pr-bpb">—</span>
+      <span class="pr-tag tag-research">Research</span>
+    </a>
+    <a href="https://github.com/openai/parameter-golf/pull/1670" target="_blank" class="pr-row">
+      <span class="pr-num">#1670</span>
+      <span class="pr-title">Adaptive per-component GPTQ sigma clip (PRC-008)</span>
+      <span class="pr-bpb">—</span>
+      <span class="pr-tag tag-research">Research</span>
+    </a>
+    <a href="https://github.com/openai/parameter-golf/pull/1687" target="_blank" class="pr-row">
+      <span class="pr-num">#1687</span>
+      <span class="pr-title">CLA architecture — cross-layer KV sharing (NV-002b non-GDN parts)</span>
+      <span class="pr-bpb">—</span>
+      <span class="pr-tag tag-research">Research</span>
+    </a>
+  </div>
+</section>
+
+<!-- ARCH SNAPSHOT -->
+<section class="arch-section">
+  <div class="arch-inner">
+    <p class="section-label">Current Stack</p>
+    <h2 class="section-title">Architecture Snapshots</h2>
+    <p class="section-sub">The two trust anchors that define the V7 starting point.</p>
+    <div class="arch-grid">
+
+      <div class="arch-card">
+        <div class="arch-label">Canonical SOTA</div>
+        <div class="arch-name">NS0 — PR #1716</div>
+        <div class="arch-bpb">1.07882 BPB</div>
+        <div class="arch-details">
+          <div class="arch-row"><span class="k">Architecture</span><span class="v">11L / 512d / MLP3×</span></div>
+          <div class="arch-row"><span class="k">Quantization</span><span class="v">Int6 GPTQ + SDClip</span></div>
+          <div class="arch-row"><span class="k">Embeddings</span><span class="v">BigramHash d=32</span></div>
+          <div class="arch-row"><span class="k">Compression</span><span class="v">bit_shuffle + Brotli-11</span></div>
+          <div class="arch-row"><span class="k">TTT</span><span class="v">None (no-TTT baseline)</span></div>
+          <div class="arch-row"><span class="k">Budget</span><span class="v">&lt; 16 MB artifact</span></div>
+        </div>
+      </div>
+
+      <div class="arch-card">
+        <div class="arch-label">FLA Benchmark</div>
+        <div class="arch-name">KKVShare Wider FLA</div>
+        <div class="arch-bpb">1.03386 BPB</div>
+        <div class="arch-details">
+          <div class="arch-row"><span class="k">Architecture</span><span class="v">KV-sharing + wider MLP</span></div>
+          <div class="arch-row"><span class="k">Attention</span><span class="v">Linear / FLA variant</span></div>
+          <div class="arch-row"><span class="k">KV Sharing</span><span class="v">Cross-layer spatial sharing</span></div>
+          <div class="arch-row"><span class="k">Seeds</span><span class="v">3-seed mean (canonical)</span></div>
+          <div class="arch-row"><span class="k">TTT</span><span class="v">None (pre-TTT baseline)</span></div>
+          <div class="arch-row"><span class="k">Status</span><span class="v">V7 benchmark to beat</span></div>
+        </div>
+      </div>
+
+      <div class="arch-card" style="border-color:rgba(167,139,250,0.2)">
+        <div class="arch-label" style="color:var(--purple-light)">V7 Target</div>
+        <div class="arch-name">Sub-1.00 Campaign</div>
+        <div class="arch-bpb" style="color:var(--purple-light)">&lt; 1.000 BPB</div>
+        <div class="arch-details">
+          <div class="arch-row"><span class="k">Phase 0</span><span class="v">ANS / rANS compression audit</span></div>
+          <div class="arch-row"><span class="k">Phase 1</span><span class="v">TMA G3 + Loop45 isolation</span></div>
+          <div class="arch-row"><span class="k">Phase 2</span><span class="v">NV-002b CLA spine</span></div>
+          <div class="arch-row"><span class="k">Phase 3</span><span class="v">DeltaShare low-rank delta</span></div>
+          <div class="arch-row"><span class="k">Phase 4</span><span class="v">Pre-quant TTT (PRC-006)</span></div>
+          <div class="arch-row"><span class="k">Deadline</span><span class="v">2026-04-30</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="opensens-logo.svg" alt="Opensens" />
+    <span class="footer-note">Opensens R&amp;D — Parameter Golf Campaign</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/genji0306/parameter-golf" target="_blank">GitHub</a>
+    <a href="https://github.com/openai/parameter-golf" target="_blank">Leaderboard</a>
+  </div>
+</footer>
+
+</body>
+</html>

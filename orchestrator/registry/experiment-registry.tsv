@@ -1,0 +1,39 @@
+experiment_id	hypothesis	status	platform	bpb	delta_bpb	kill_reason	notes
+H85	GatedDeltaNet/FLA	KILLED	RunPod	1.223	+0.142	confirmed dead (L)	Canonical scorer 3-seed mean; buggy scorer showed 1.034 (same bug as PR #1687)
+BQ1	Short-window 4L/448d	KILLED	RunPod	1.2321	+0.151	capacity (H)	L20: do not shrink below 11L/512d
+H91	AdamW TTT (PQ1)	KILLED	RunPod	1.1757	+0.095	empirical	L35: far below baseline
+H89	Late-SAM warmdown (PQ2)	KILLED	RunPod	1.1015	+0.021	empirical	L36: still above 1.081
+H96	PR #1711 GDN reproduction	BLOCKED	-	-	-	scorer audit	Audit shows same non-canonical LUT as H85 — leaderboard scores likely invalid (L45-L46)
+H97	GDN-Hybrid (PR #1672)	BLOCKED	-	-	-	scorer audit	Same LUT issue expected
+H-105	MTP auxiliary loss	KILLED	-	-	-	dead at scale	L23
+H-106	Mixture of Depths	KILLED	-	-	-	wrong constraint	L24
+H-102	BLT architecture	KILLED	-	-	-	infeasible	L26
+H87	Per-loop LoRA rank-4 (isolated)	PRIORITY-1	RunPod lane	-	-	-	EXP-H87-SOTA-PerLoopLoRA promoted to next RunPod lane; ~3.5 MB artifact cost
+H88	Per-loop unique LN + loop embed (isolated)	PRIORITY-2	MLX→RunPod	-	-	-	Queued behind H87; 27 KB fp16, budget-invisible
+H-081	Codex chunking variant 1	PRIORITY-3	MLX	-	-	-	NEW: promoted after GDN kill; details TBD
+H-082	Codex chunking variant 2	PRIORITY-4	MLX	-	-	-	NEW: promoted after GDN kill; details TBD
+H-083	Codex chunking variant 3	PRIORITY-5	MLX	-	-	-	NEW: promoted after GDN kill; details TBD
+H98	SpinQuant (Hadamard before GPTQ)	PENDING	RunPod	-	-	-	-0.005 BPB from quant quality; stacks with winner
+H94	Engram n-gram hashing	DEFERRED	RunPod	-	-	-	Later fallback only
+H86	Trajectory-state readout	LOW-EV	RunPod	-	-	-	Only -0.0022, 3ms overhead
+H93	LeakyReLU(0.5)² activation	LOW-EV	MLX	-	-	-	MLX favored plain ReLU²
+H90	Length curriculum 256→1024	LOW-EV	MLX	-	-	-	Good prior, not headline novelty
+NV-001	Differential Transformer attention	KILLED	research	1.158	+0.077	throughput (J)	4 prior PRs tested; +30% step time → 0.18 BPB tax; modded-nanogpt rejected
+NV-002	MLA (classic)	KILLED	research	-	-	param math (E)	LARGER than GQA-4 at head_dim=64; MLA is KV-cache not param optimization
+NV-002b	CLA / Cross-Layer KV Share	NOVEL-PROMOTED	MLX→RunPod	-	-	-	PR #1687/#1711 arch (non-GDN parts survive canonical scorer); frees 1.3M params
+NV-003	Selective short-window (non-recurrence layers)	PROMOTED	MLX→RunPod	-	-	-	Research-validated; -5 to -8 ms throughput win; exp ΔBPB -0.003 to -0.008
+NV-004	QA-LoRA + unmerged Int6 (supersedes H87 storage)	PROMOTED	MLX→RunPod	-	-	-	Saves 3.5 MB vs H87; exp ΔBPB -0.005 to -0.015; must verify STE=GPTQ grid
+NV-005	Per-pass ALiBi slopes (NOVEL, no prior publication)	PROMOTED	MLX→RunPod	-	-	-	48 bytes fp16, +0.01ms; exp ΔBPB -0.002 to -0.006
+PRC-001	BigramHashEmbedding d=32 on bigbag SOTA	PROMOTED	MLX→RunPod	-	-	-	PR #1716; tightest n-gram size, ~200 KB; legal under canonical
+PRC-002	Path A v3 passthrough int8 + LZMA code wrapper	PROMOTED	MLX→RunPod	-	-	-	PR #1716; 5 control-tensor families int8 + 3 small matrices per-row int8; saves 0.5-1 MB
+PRC-003	AttnOutGate per-loop	PROMOTED	MLX→RunPod	-	-	-	PR #1667/#1693; zero-init sigmoid gate; 1,344 params; keep fp16
+PRC-004	SmearGate per-loop	PROMOTED	MLX→RunPod	-	-	-	modded-nanogpt; 39 params; zero-init input-dependent mixer
+PRC-005	Multi-phase global SGD TTT	NEEDS-RESEARCH	RunPod	-	-	-	PR #1626; different mechanism from killed H91 (SGD not AdamW, phased not monolithic)
+PRC-006	Phased LoRA TTT	NEEDS-RESEARCH	RunPod	-	-	-	PR #1700; only LoRA params update at eval; parameter-efficient, legal
+PRC-007	Int7 embeddings	PROMOTED	MLX→RunPod	-	-	-	PR #1700; saves ~200 KB vs int8 embeddings; uniform grid, not in kill family A
+PRC-008	Adaptive per-component GPTQ sigma clip	PROMOTED	MLX→RunPod	-	-	-	PR #1670; must re-tune to 7-9σ post-SpinQuant (L63)
+NV-006	Mixture of per-loop LoRAs (MoLoRA)	SPECULATIVE	MLX	-	-	-	H87 + gated expert selection; wait for H87 result
+NV-007	Hidden-state bottleneck between passes	SPECULATIVE	MLX	-	-	-	524K params (~390 KB Int6); risk of info loss
+NV-008	BitFit-style TTT (LN-only)	NOVEL-COMBINE	RunPod	-	-	-	H91 fail + BitFit; only 1.5K params updated at eval
+NV-009	Scorer-aware training loss	RISKY	-	-	-	-	Needs compliance audit (Issue #1017)
+NV-010	Pass-indexed dropout masks	SPECULATIVE	MLX	-	-	-	Zero params; deterministic masks per pass
