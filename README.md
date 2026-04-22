@@ -4,6 +4,27 @@
 
 **[Campaign Site →](https://genji0306.github.io/parameter-golf/)**
 
+[![Watch the intro video](docs/images/intro-preview.gif)](https://genji0306.github.io/parameter-golf/)
+
+> Click to watch the full 83-second campaign intro on the site.
+
+### Architecture & Research Snapshots
+
+| BPB Journey | Attention Fingerprint |
+|:-----------:|:---------------------:|
+| [![BPB Journey](docs/images/frame-bpb-journey.jpg)](docs/images/frame-bpb-journey.jpg) | [![Attention Fingerprint](docs/images/frame-arch-fingerprint.jpg)](docs/images/frame-arch-fingerprint.jpg) |
+| Baseline 1.150 → SOTA 1.07882 → Target <1.000 | Causal attention matrix · GQA-4 · KV sharing grid |
+
+| Candidate vs Baseline | Latent Space |
+|:---------------------:|:------------:|
+| [![Candidate vs Baseline](docs/images/frame-cand-vs-base.jpg)](docs/images/frame-cand-vs-base.jpg) | [![Latent Space](docs/images/frame-latent.jpg)](docs/images/frame-latent.jpg) |
+| Teal (1.07882 BPB) vs Amber (1.0810 baseline) | FP32 180MB → SpinQuant 6-bit → Int6+SDClip 16MB |
+
+| What We Killed | V7 Next Steps |
+|:--------------:|:-------------:|
+| [![What We Killed](docs/images/frame-kills.jpg)](docs/images/frame-kills.jpg) | [![V7 Next Steps](docs/images/frame-next7.jpg)](docs/images/frame-next7.jpg) |
+| GDN/FLA 1.223, H91 1.176, H87 +3.5MB — dead directions | ANS audit → TMA port → Loop45 → DeltaShare → PR |
+
 ### Locked Benchmark
 
 | Role | Run | BPB |
