@@ -1,5 +1,3 @@
----
-
 ## Opensens Research — Parameter Golf Campaign
 
 **[Campaign Site →](https://genji0306.github.io/parameter-golf/)**
